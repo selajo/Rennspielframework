@@ -1,11 +1,11 @@
-# BA-Rennspielframework-AndreZimmer-202122
+# Rennspielframework
 
 # Maven-Anleitung:
 Build und Jar-File erstellen:
 - mvn package
 - mvn clean package (löscht altes jar-File --> sauberer)
 
-Jar-File ausführen:
+# Jar-File ausführen:
 
 Server:
 - java -cp target/Rennspielframework-0.0.1-SNAPSHOT.jar anwendungsschicht.RennspielStart server "/Res/Config/ConfigWorld00.json"	#Kompilieren -> Testing -> Packaging
