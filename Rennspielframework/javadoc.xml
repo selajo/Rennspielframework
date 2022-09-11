@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="C:\Users\André\.p2\pool\plugins\org.junit_4.13.0.v20200204-1500.jar;jar/java-json.jar;jar/json-simple-1.1.jar;C:\Users\André\.p2\pool\plugins\org.hamcrest.core_1.3.0.v20180420-1519.jar" destdir="C:\Users\André\Desktop\Bachelorarbeit Datentraeger" doctitle="Rennspiel JavaDoc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="anwendungsschicht,gui,spiellogikschicht,spielansichtsschicht" source="11" sourcefiles="test/JuniProject.java" sourcepath="Res;test;src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

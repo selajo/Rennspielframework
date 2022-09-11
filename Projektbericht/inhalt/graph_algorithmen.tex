@@ -1,0 +1,26 @@
+\subsection{Graph-Algorithmen}
+Ein \textbf{Shortest-Path-Algorithmus} soll den kürzesten Weg zwischen zwei Punkten in einem Graphen finden. \textit{Short} meint in diesem Kontext nicht zwingend die physische Distanz, sondern kann sich auch auf Zeit, andere Kosten oder eine Kombination dieser Faktoren beziehen.\newline  
+Zu den bekanntesten Shortest-Path-Algorithmen zählen die Algorithmen von \textit{Dijsktra}, \textit{Bellman-Ford}, \textit{Floyd-Warhsall}, sowie der \textit{A*}-Algorithmus.\newline
+Pathfinding wird darüber hinaus auch verwendet, um einen gangbaren Weg durch eine Umgebung mit Hindernissen zu finden.
+
+
+Für unser Rennspiel werden die Algorithmen von Dijkstra, sowie der A*-Algorithmus jeweils für einen KI-Client realisiert. Deren Implementierungen werden im später folgenden Abschnitt ... noch genauer beleuchtet. Zunächst soll allerdings noch die grundsätzliche Funktionsweise der Graphalgorithmen erläutert werden.\newline
+
+\subsubsection{Dijkstra-Algorithmus}
+Der Algorithmus von Dijkstra wurde bereits 1956 vom niederländischen Informatiker Edsger W. Dijkstra als optimaler Wegfindealgorithmus für Graphen entwickelt \cite{}.\newline
+Die ursprüngliche Implementierung des Algorithmus lief im schlechtesten Fall mit einer Laufzeit von O(N2), wobei N die Anzahl der Knoten im Graphen ist.
+Schnellere Implementierungen wurden später im Jahr 1984 von Fredman und Tarjan \cite{Fredman.1984} forgestellt, die im schlimmsten Fall eine Laufzeit von O(E + N log N) erreichen, wobei E die Anzahl der Kanten im Graphen ist.
+Neben dem Graphen, benötigt der Algorithmus noch einen Start- und Zielknoten als Input. Sich dem Breitensuch-Algorithmus ähnelnd, schreitet er vom Startknoten aus in alle Richtungen voran.
+Sobald der Zielknoten erreicht ist, kann der kürzeste Weg zum Startknoten zurückgerechnet werden.\newline
+Während dem Suchvorgang werden die Knoten unterschieden zwischen \textit{gesehenen} und \textit{Grenzknoten}.\newline
+Priority Queue\newline 
+Ein zentrales Element des Algorithmus ist der sog. G-Wert, welcher ebenfalls jedem Knoten zugewiesen wird.
+Bereits erforschte Knoten haben einen G-Wert gleich der Länge des kürzesten Weges zurück zum Startknoten. Für Knoten in der Grenzmenge ist er nur eine vorläufige Schätzung. Für Knoten, die nicht in diesen Mengen enthalten sind, ist der Wert undefiniert.\newline
+
+
+ 
+
+\subsubsection{A*-Algorithmus}
+Der A* (A-Stern) Algorithmus wurde zum ersten mal 1968 von einer Gruppe von Forschern des Stanford Research Institute vorgestellt \cite{aStern}. 
+Dabei handelt es sich im Grunde um eine Erweiterung des Algorithmus von Dijsktra, indem versucht wird die Laufzeit durch die Einführung von Heuristiken zu optimieren.\newline
+A* nutzt die Tatsache, dass alle Knoten räumliche Koordinaten haben. Diese Koordinaten können verwendet werden, um mit Hilfe einer Abstandsfunktion zu messen, wie weit ein Knoten vom Zielknoten entfernt ist.\newline

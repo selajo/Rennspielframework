@@ -1,0 +1,25 @@
+\subsubsection{Template-Muster}
+Dieses Verhaltensmuster wird laut \cite[325ff.]{gamma.2011} dafür eingesetzt, wenn es beispielsweise einen Algorithmus gibt, der sich zu einem anderen Algorithmus nur an wenigen Stellen des Ablaufs unterscheidet.\\
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\tikzumlset{fill class = white, fill template = white}
+	\umlclass[x=6,type=abstract]{AbstrakteKlasse}{ }{ + TemplateMethode()\\ + \umlvirt{ Operation1() }\\ + \umlvirt{ Operation2()} }
+	\umlclass[x=0]{KonkreteKlasse} { }{ + Operation1()\\ + Operation2() }
+	\umlnote [x=11, fill=white] {AbstrakteKlasse}{ ...\\ Operation1()\\ ...\\ Operation2()\\ ...}
+
+	
+	\umlinherit{KonkreteKlasse}{AbstrakteKlasse}
+	%\umlnote[y=-3, width=4cm, fill=white]{Kontext}{ruft auf:\\ strategie.algorithmus()}
+
+\end{tikzpicture}
+\caption{Memento-Muster \cite[In Anlehnung an][S.327]{gamma.2011}}
+\label{fig:template}
+\end{figure}
+Wie in \autoref{fig:template} zu sehen ist, besteht dieses Muster aus den zwei Komponenten \texttt{AbstrakteKlasse} und \texttt{KonkreteKlasse}.\\
+Die \texttt{AbstrakteKlasse} beschreibt hierbei einen Algorithmus mit der \textbf{TemplateMethode}, welche die abstrakten Operationen \textbf{Operation1} und \textbf{Operation2} verwendet.\\
+Die \texttt{KonkreteKlasse} überschreibt hierbei lediglich \textbf{Operation1} und \textbf{Operation2}.\\
+Mithilfe dieses Mechanismus kann der Ablauf eines Algorithmus festgelegt und vorgegeben werden. Zusätzliche Algorithmen, die sich im Ablauf ähneln, aber an wenigen Stellen ein anderes Verhalten aufzeigen, können hier also leicht ergänzt werden.\\
+Im Folgenden werden sowohl das Template-Muster, als auch das Strategie-Muster verglichen, da für dieses Projekt mehrere Algorithmen eingesetzt werden und somit ein Mechanismus notwendig ist, diese so einfach wie möglich verwalten zu können.\\
+Wie bereits beschrieben, hilft Template dabei den Ablauf eines Algorithmus festzulegen. Allerdings fehlt hierbei ein Mechanismus, der dabei hilft zwischen mehreren Algorithmen einen beliebigen auszuwählen. Dies ermöglicht Strategie mithilfe der \texttt{Kontext}-Klasse. Dazu folgt, dass bei Algorithmen, die sich im Ablauf komplett unterscheiden Template nicht hilfreich ist und hier Strategie mehr Möglichkeiten bringt.\\
+Falls es also mehrere Algorithmen gibt, die sich nur an wenigen Stellen im Ablauf unterscheiden, so ist eine Kombination beider Verhaltensmuster eine Möglichkeit, den Ablauf vorzugeben und eine \texttt{Kontext}-Klasse anzubieten, die dem Nutzer eine Instanz des jeweiligen Algorithmus liefert.

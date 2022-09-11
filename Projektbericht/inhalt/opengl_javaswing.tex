@@ -1,0 +1,62 @@
+\subsection{OpenGL und Java-Swing}
+
+Ein Ziel dieses Projektes ist es, das bereits vorhandene Grafikframework Java-Swing durch das Grafikframework OpenGL zu ersetzten. Der Hauptgrund für diese Entscheidung ist, dass die Java-Swing-Bibliothek nicht dafür ausgelegt ist ein Computerspiel effizient zu zeichnen. Mit OpenGL als ein Grafikframework, dass für die Computerspielanzeigt designt wurde, sodass eine Darstellung in Echtzeit von 2D-  und 3D-Grafikanwendungen möglich ist.
+
+\subsubsection{LWJGL - Bibliothek}
+
+Die Lightweight Java Game Library (LWJGL) ist eine Java-Computerspiel-Bibliothek, die eine plattformübergreifenden Zugriff auf verschiedene Schnittstellen ermöglicht. Für dieses Projekt wird die Bibliothek benötigt, um einen Zugriff auf OpenGL-Funktionen zu erhalten. Diese werden benötigt, da eine Grafik-Anwendung erstellt werden soll. Mit OpenGL ist es nicht möglich ein Spielfenster zu erstellen, um die Unabhängikeiten von Programmiersprache und Betriebsstyem zu erfüllten. Diesen Funktionalität übernehmen eingebundene Bibliotheken (wie GLFW) , die in der LWJGL Bibliothek includiert sind. Außerdem können somit umgebungsunabhängige Tastertur- und Mauseingaben erkannt werden.
+
+\subsubsection{OpenGL - Definition}
+
+OpenGL (OpenSource Grafics Library) ist eine Grafik-Schnittstelle, die genutzt werden kann um schnelle, bewegte 3D-Grafikbilder zu erstellen und zu manipuliere. Aber sie benötigt eine Programmiersprache in der es agieren kann. Ursprünglich wurde OpenGL für die Sprache C++ entwickelt. Da dieses Projekt in Java entwickelt wurden, wird die LWJGWL- Bibliothek (später Kapitel) benötigt, um OpenGL in Java nutzen zu können.
+Ein großer Vorteil von OpenGL ist es betriebsystem und hardware-unabhängig zu sein, sodass auf OpenGL auf verschiedenen Betriebssystemen lauffähig ist. Das wurde auch in diesem Projekt getestet, denn für die Entwicklung wurde das Programm auf Linux, Window und einem OS-betriebenden Computer ausgeführt.
+
+Das Einbinden der OpenGL-Bibliothek in das Projekt, wird mit der Maven-Configuration geregelt, sodass auch alle Abhängigkeiten berücksichtigt werden. 
+
+In der OpenGL Spezifikation wird nur die Ausgabe definiert, was eine Funktion genau als Rückgabe liefert und wie genau sie funktionieren muss. Das erlaubt den Entwicklern beim Implementieren verschiedene Lösungen für Funktionsweise der Methoden zu finden. Deswegen gibt es in der OpenGL Spezifikation gibt keine Informationen über die Implementierung. In der Regel sind die Entwickler Grafikkarten-Hersteller, wo in der Hardware die Versionsuntertützung von OpenGL festgelegt wird.
+
+\chapter*{OpenGL - Definition Grundlagen}
+
+OpenGL hat zwei grundlegende Modi definiert. Der alte direkte Modus, zeichnete sich dadurch aus, das es eine Pipeline mit festen Funktionen gab. Diese Funktionen waren sehr einfach zu verwenden und man war in der Lage unmittelbar Grafiken zu zeichnen. Der große Nachteil dieser Funktionen bestand darin, dass die Entwickler keine Kontrolle darüber besaßen, wie OpenGL seine Berechnungen durchführte. 
+
+Der neue OpenGL Ansatz wird als OpenGL-Core-Profil bezeichnet und wurde mit OpenGL Version 3.3 eingeführt. Dort wird man von OpenGL gedrängt die modernen Praktiken zu verwenden, indem OpenGL Fehler meldet und das Zeichnen der Grafik einstellt. Der moderne Ansatz hat den Vorteil sehr flexibel und effizient zu sein, denn die können genauer kontrollieren was genau und wann etwas gezeichnet wird. Der große Nachteil dieses Modus ist, das ein Entwickler die Grafikprogrammierung wirklich verstehen muss, um sie überhaupt anzuwenden.
+
+In diesem Projekt wird der neue OpenGL-Core-Profil Ansatz verwendet, da der Hauptgrund eines Frameworkwechsels darin bestand, die Berechnung der Grafikkomponente dieses Rennspielframeworks effizienter zu gestalten.
+
+Eine der Kernprinzipien nach der OpenGL arbeitet ist, dass OpenGL eine Status Maschine ist. Eine bestimmte Anzahl an Variablen definiert wie OpenGL im Augenblick arbeiten soll. Erst mit mit änderen bestimmter Variablen wird der Status der Anzeige geändert, sodass anstadt Dreiecke zum Beispiel Linien gezeichnet werden.
+
+Zu berücksichtigen ist bei OpenGL das die Bibliothek in C geschrieben wurde. Deswegen sind in OpenGL viele Funktionalitäten, auch wenn eine andere Programmiersprache wie Java genutz wird, der von C sehr ähnlich. So muss auch in einem Java Programm Speicherplatz angefordert werden und es müssen spezielle Konstrukte verwendet werden, wie zum Beispiel Objekte die einem C struct entsprechen.
+
+\subsubsection{Die Grafikpipeline in OpenGL}
+
+OpenGL ist definiert, das sich jedes Spielobjekt in einem dreidimensionalen Raum befindet. Das Problem mit dem man konfrontiert wird ist, dass am Ende die Grafik auf einem 2D-Spielfenster angezeigt werden muss. OpenGL hat die meiste Arbeit damit 3D-Koordinaten in ein 2D-Array von Pixeln zu konvertieren, die Prozess wird in OpenGL mit einer Grafik-Pipeline verwaltet. Dieser Umwandlungsprozess geschieht in zwei Teilen. Beim ersten Teil werden die 3D-Koordinaten in 2D-Koordinaten umgewandelt und beim zweiten Teil werden diese 2D-Koordinaten zu farbigen Pixel übersetzt.
+
+Die Grafikpipeline wird in mehrere Schritte unterteilt, wobei die Eingabe jedes Schrittes die Ausgabe des vorherigen Schrittes erfordert. Diese schritte haben immer nur eine bestimmte Aufgabe und können parallel ausgeführt werden. Aufgrund der Internen Struktur einer Grafikkarte mit vielen kleinen Rechenkernen können die Daten sehr schnell verarbeitet werden. Die Programme die diese Rechenschritte ausführen werden Shader genannt.
+
+Ein paar dieser Shader sind indivduell an die eigenen Anwendung anpassbar, sodass eigene Shader entwickelt werden können. Dadurch besitzt man eine viel genauere Kontrolle über die Grafikpipeline und man kann mit diesen CPU-Zeit einsparen, da die aufwendige Berechnungen auf die GPU ausgelagert werden. Die Shader werden in einer für OpenGL entwickelten Programmiersprache geschrieben der OpenGL Shading Language (GLSL).
+
+%Bild
+
+In der gezeigten Grafik sieht man die abstrakte Darstellung von den Prozessen in der Grafik-Pipeline. Dort kann man sehen wie in einzelnen Schritten aus 3D-Koordinaten, die Vertex-Daten bezeichnet werden, in einzelnen Schritten zeichenbare Pixels entstehen. Der Vertex-, Geometry- und Fragment Shader können durch eigene Shader ausgetauscht werden. Ein Vertex ist ein Sammlung von Eigenschaften eines Punktes, das können Postionsdaten, Farbwerte, Texturen sein.
+
+\chapter*{Shaders in der Grafikpipeline}
+
+Der erste Teil der Pipeline ist der Vertex-Shader, dort wird ein einzelner Vertex eingegeben. Seine Aufgabe ist es eine 3D Koordinate in eine andere 3D Koordinate umzuwandeln. Der Vertex-Shader ermöglicht es grundlegende Verarbeitungen an den Vertex-Eigenschaften vorzunehmen. %%noch mehr
+
+Die Primitiv-Assembly-Phase nimmt die vom Vertex-Shader zurückgelieferten Vertexe und setzt sie zu einer einfachen Form zusammen. Das können Linien, Rechtecke oder auch Dreiecke sein.
+
+Alle ausgebenen primitiven Formen werden als nächstes im Geometrieshader bearbeitet. Dort werden andere oder zusätzliche Vertex-Punkte erstellt mit denen neue Formen/Primitive gebildet werden.
+
+In der Rasterisierung werden alle Formen die im Geometrieshader entstehen, werden auf die entsprechenden Pixel des Bildschirms aufgeteilt. Das führt zu Fragmenten, die der Fragmentshader verwendet. Davor wird aber noch ein Clipping durchgeführt, das alle Fragmente entfernt die sich außerhalb der Ansicht befinden um die Leistung zu erhöhen.
+
+Die wichtigste Aufgabe nämlich vom einfärben der Pixel übernimmt der Fragment-Shader. In diesem Schritt können fortgeschrittene OpenGL-Effekte, wie flackern, Nebel usw. eingefügt werden. In der Regel werden hier Standdardeffekte eingefügt, wie Schatten, Licht und dessen Farbe.
+
+Nach der Ermittlung der Farbwerte kommt noch eine sogennante Alphatest- und Überblendungsphase. Da man sich im dreidimensionalen Raum befindet, werden hier Tiefenwerte der Fragmente überprüft. Wenn sich Objekte überdecken werden diese entsprechend verworfen. Auch werden hier die Alphawerte (diese definieren die Deckkraft eines Objektes überprüft.
+
+Der ganze Prozess der Grafikpipeline ist ein ziemliches komplexes Gerüst, das aber die Möglichkeit gibt vieles selbst zu konfigurieren. Der Vertex- und Fragment-Shader werden in diesem Projekt selbst definiert, da auf der GPU keine Standdard-Shader exisitieren.
+
+
+
+
+
+\subsubsection{ImGUI}

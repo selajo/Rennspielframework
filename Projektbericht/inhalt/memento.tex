@@ -1,0 +1,35 @@
+\subsubsection{Memento}
+Die Motivation des \textit{Memento}-Musters ist laut \cite[S. 283 ff.]{gamma.2011} das Zurücksetzen eines Zustands ohne hierbei interne Eigenschaften der Klassen preiszugeben. 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\tikzumlset{fill class = white, fill template = white}
+	\umlclass[x=0]{Originator}{ - Zustand }{ + SetZustand(m : Memento)\\ + ErzeugeMemento() }
+	\umlclass[x=6]{Memento} { - Zustand }{ + GetZustand()\\ + SetZustand() }
+	\umlclass [x=11.5] {Caretaker}{}{}
+
+	
+	\umlimport[]{Originator}{Memento};
+	\umluniaggreg[arg=memento, pos=0.5]{Caretaker}{Memento};
+	%\umlnote[y=-3, width=4cm, fill=white]{Kontext}{ruft auf:\\ strategie.algorithmus()}
+
+\end{tikzpicture}
+\caption{Memento-Muster \cite[In Anlehnung an][S.285]{gamma.2011}}
+\label{fig:memento_pattern}
+\end{figure}
+
+Das Verhaltensmuster besteht aus den in \autoref{fig:memento_pattern} dargestellten Elementen:
+\begin{itemize}
+\item \texttt{Originator}: Stellt einen Zustand dar, welcher in einem \texttt{Memento}-Objekt gespeichert werden kann.
+\item \texttt{Memento}: Hier wird das \texttt{Originator}-Objekt in Form eines Zustands gespeichert. 
+\item \texttt{Caretaker}: Verwaltet die bereits erzeugten \texttt{Mementos}, greift aber nicht auf den Inhalt der Zustände zu. Dieses Element ist also dafür zuständig, beliebige Zustände wiederherzustellen.
+\end{itemize}
+Das Memento-Muster bringt zudem folgende Konsequenzen mit sich:
+\begin{itemize}
+\item Das Muster schirmt andere Objekte von potenziell komplexen Originator-Interna ab und bewahrt so die Kapselungsgrenzen. Dies erfolgt dadurch, dass die Offenlegung von Informationen, die nur von einem Originator verwaltet werden sollten, die aber dennoch außerhalb des Originators gespeichert werden müssen, vermieden werden.
+\item Da die gesamte Speicherverwaltung nicht beim \texttt{Originator} liegt, vereinfacht die Verwaltung des angeforderten Zustands den \texttt{Originator}.
+\item Wenn der \texttt{Originator} eine große Menge an Informationen kopieren muss, um einen \texttt{Memento} zu erzeugen, wird hier ein Overhead verursacht. Das bedeutet also, wenn die Wiederherstellung des \texttt{Originator}-Zustands sehr aufwändig ist, ist das Memento-Muster infolgedessen auch sehr aufwändig.
+\item Da die \texttt{Caretaker}-Instanz keine Information darüber hat, wie viele Daten in einem \texttt{Memento} enthalten sind, kann ein Speichern der \texttt{Memento}-Instanzen große Speicherkosten verursachen.
+\end{itemize}
+
+

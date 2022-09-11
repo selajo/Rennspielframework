@@ -1,0 +1,56 @@
+\subsection{Implementierung der KI-Algorithmen}
+
+Im Folgenden soll auf die Implementierung der KI-Algorithmen eingegangen werden.\newline
+Dabei wird zunächst auch der zugehörige SpielGraph vorgestellt. Abschließend werden auch Anpassungesmöglichkeiten im Fahrverhalten der KI beleuchtet.
+
+\subsubsection{Spielegraph}
+
+Der Graph, den die Graphenalgorithmen für die Berechnungen der kürzesten Wege verwenden,
+lässt sich schlicht auch als 2-dimensionales gefülltes Koordinatensystem betrachten.
+Dabei stellen sämtliche X- und Y-Paare im definiertern Bereich einen Knoten (\textit{SpielKnoten}) dar.
+Diese Knoten sind durch Kanten miteinander verbunden: Jeder Knoten besitzt 8 Nachbarknoten.(Siehe Abbildung drölf; bis auf die nahe dem Map-Rand gelegenen Knoten)
+Initial bei Spielstart, werden sämtliche (600) \textit{SpielKnoten} initialisiert.
+Während den Kalkulationen der Algorithmen können diese, nun zusammengefasst als eine Java-\textit{ArrayListe}, mit folgenden Attributen 
+versehen werden:\newline
+\textbf{NachbarKnoten}: Die 8 \textit{NachbarKnoten} ein\newline
+\textbf{Direction}: Die Direction definiert ein Java-\textit{Enum}. Dort werd die Ausrichtung/Himmelsrichtung der \textit{NachbarKnoten} festgelegt.\newline
+\textbf{kosten, heuristik, funktion, distanz}: Diese Attributee werden vom A-Stern-Algorithmus verwendet.
+Deren Funktion und Nutzen werden in Abschnitt drölf genauer erläutert.\newline
+\textbf{ElternKnoten}: (Im Code Refactorn!)\newline
+\textbf{kiPfadElement}: für Ausgabe(Zeichnen) des KI-ermittelten Pfades in der (Acronym!)IDE-Konsole\newline
+\textbf{gesehen}: Diese Membervariable wird vom Dijkstra-Algorithmus verwendet und daher im Abschnitt drölf beschrieben.\newline
+
+Attribute und Funktionen, die für Graphen Algorithmen notwendig sind(Nachbarknoten,...)
+
+\subsubsection{Abstract Class KI}
+
+kurz Allgemein: Warum Abstrakte Klasse in Software Entwicklung und wie hier realisiert\newline
+dann: Wie hier implementiert (in Java): Kein Interface, da manche Methoden von der ErbenKlasse implementiert werden sollen, allerdings nicht alle(später vielleicht nichtGraphAlogrithmen, die aber auch updateVoid dann für sich implementieren können und alle anderen Funktionen ggf übernehmen können)
+
+
+Warum? Um weitere KI-Clients leicht implementieren zu können.(Gemeinsamkeiten können wiederverwendet werden) \newline
+Außerdem: Freies Anpassen des Fahrverhaltens durch KI-Fahrverhalten(später im Kapitel)
+
+Abschließend eine Grafik mit Übersicht
+
+\subsubsection{A-Stern}
+
+\subsubsection{Dijkstra}
+
+evtl abschließend kurz Gemeinsamkeiten/Unterschiede der beiden
+
+\subsubsection{Richtungsentscheidung}
+
+1.Spielknoten des ermittelten Pfades\newline
+erneutes Berechnen der Nachbarknoten\newline
+dadurch Richtungsentscheidung WASD\newline
+Grafik mit 3x3 Quadraten und den Richtungen\newline
+
+
+\subsubsection{KI-Fahrverhalten}
+
+\textbf{Entschleunigung vor Kurven}
+
+\textbf{Umkehren nach Verlassen der Fahrban}
+
+\textbf{Kollisionscheck}

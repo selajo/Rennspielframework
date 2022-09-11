@@ -1,0 +1,40 @@
+{
+  "auto": [
+    {
+      	"autoId": 1,
+      	"autoTyp": "RotesAuto",
+	"physikkomponente": "RotesAutoPhysikKomponente",
+	"masse": "500",
+	"maxGeschwindigkeit": "80000",
+	"fahrKraftsteigerung": "5000",
+	"datenkomponente": "RotesAutoAkteurDatenKomponente"
+    },
+    {
+      "autoId": 2,
+      	"autoTyp": "BlauesAuto",
+	"physikkomponente": "RotesAutoPhysikKomponente",
+	"masse": "550",
+	"maxGeschwindigkeit": "85000",
+	"fahrKraftsteigerung": "5000",
+	"datenkomponente": "RotesAutoAkteurDatenKomponente"
+    },
+    {
+      "autoId": 3,
+      	"autoTyp": "GruenesAuto",
+	"physikkomponente": "RotesAutoPhysikKomponente",
+	"masse": "500",
+	"maxGeschwindigkeit": "80000",
+	"fahrKraftsteigerung": "5000",
+	"datenkomponente": "RotesAutoAkteurDatenKomponente"
+    },
+	{
+      "autoId": 4,
+      	"autoTyp": "GelbesAuto",
+	"physikkomponente": "RotesAutoPhysikKomponente",
+	"masse": "450",
+	"maxGeschwindigkeit": "85000",
+	"fahrKraftsteigerung": "5000",
+	"datenkomponente": "RotesAutoAkteurDatenKomponente"
+    }
+  ]
+}

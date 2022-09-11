@@ -1,0 +1,13 @@
+\subsection{Diskussion zur trivialen KI}
+Was die triviale KI betrifft, so ist sofort zu erkennen, dass sich das Auto des Algorithmus immer am äußeren Rand der Fahrbahn befindet. Zusätzlich wird das Fahrzeug in fast jeder Kurve aus der Fahrbahn geschleudert, da der Algorithmus nicht bremst. Der Mechanismus, der das Erkennen der Fahrt in die falsche Richtung erkennt, erfüllt seinen Zweck. Jedoch kann dies aufgrund einer hohen Wahl der Distanz zum nächsten Referenzpunkt ziemlich spät ausfallen. Der schlimmste Fall kann hierbei eintraten, wenn das Fahrtzeug in die Gegenrichtung fährt, wenn die aktuelle Kachel den vorherigen Referenzpunkt darstellt. So würde der Mechanismus hier erst eingreifen, wenn schon der vorletzte Referenzpunkt erreicht ist.\\
+Eine weitere negative Eigenschaft der trivialen KI, ist das schlichte Fahren, ohne den kürzesten Weg zum nächsten Referenzpunkt zu ermitteln. Dies würde zum Erkennen einer Fahrt entgegen der Fahrtrichtung beitragen.\\
+Eine positive Eigenschaft der trivialen KI ist jedoch, dass der eigentliche Rechenaufwand hauptsächlich in der Berechnung des nächsten Referenzpunktes liegt, da lediglich die nächste Fahrtrichtung erst bei Erreichen eines Straßenendes erfolgt.\\
+Da die triviale KI und der Algorithmus zum Berechnen der Referenzpunkte ähnlich beim Berechnen der Fahrtrichtung vorgehen, so hat dieser die ähnliche Vor- und Nachteile wie die triviale KI. Die Simulation zum nächsten Referenzpunkt erfolgt hierbei auch am äußeren Straßenrand.\\
+Außerdem können die Algorithmen in deren aktuellen Umsetzung nicht auf eine Kreuzung reagieren, in der der Spieler beispielsweise von links kommt und nach oben oder unten weiterfahren soll.\\ 
+Somit ergeben sich die folgenden Verbesserungsvorschläge für beide Algorithmen:
+\begin{itemize}
+\item Mithilfe eines Bremsmechanismus würde die triviale KI nicht mehr so oft von der Fahrbahn abweichen.
+\item Würde Simulation des Referenzpunkte-Algorithmus im Inneren der Straße stattfinden, so würde der Sicht-Radius maximal ausgenutzt werden können. 
+\item Bei Kreuzungen könnte der Mittelpunkt der Kreuzung zu den Randpunkten hinzugefügt werden, so würde bei einer Sackgasse zunächst dieser Punkt betrachtet werden.
+\end{itemize}
+Als Fazit lässt sich hierbei jedoch sofort ziehen, dass beide Algorithmen das Ziel, einen trivialen Algorithmus zum Bewältigen eines Rennspiels, erreichen. Hierbei ist es interessant die Algorithmen mit den genannten Verbesserungsvorschlägen zu erweitern und die Nachteile auszubessern.   

@@ -1,0 +1,75 @@
+%\input{lib/includes}
+%\addbibresource{../literatur.bib}
+
+
+\subsection{Maven} \label{sec:maven_grund}
+Laut \cite[S. 1ff.]{Varanasi.2019} ist \textit{Apache Maven}, im Folgenden mit Maven abgekürzt, ein Framework, das Projektmanagement erleichtern soll, indem z.B. das Erstellen, Testen, Dokumentieren und Kompilieren von Projekten automatisiert wird. Über folgende beispielhafte Eigenschaften verfügt dieses Framework:
+\begin{itemize}
+\item Maven schreibt eine Struktur für die Organisation der Ordner vor, wozu Quell-, Testcode und Konfigurationsdateien zählen.
+\item Des Weiteren übernimmt Maven das Herunterladen und Hinzufügen externer Pakete, von denen das Projekt abhängt. 
+\item Mithilfe von sogenannten \textit{Archetypes} werden die Projekte kompiliert und alle notwendigen Dateien zu einer ausführbaren Datei verpackt.
+\end{itemize}
+All dies erfolgt mithilfe einer einzigen Konfigurationsdatei. Aufgrund der oben beschriebenen Punkte hilft Maven somit ein Standardverfahren zur gemeinsamen Nutzung der erzeugten Artefakte in verschiedenen Projekten festzulegen.\\
+Im Folgenden wird die Einbindung von Maven im Rennspielframework erläutert. Hierfür wird zunächst der Ausgangszustand des Rennspielframeworks erläutert und mit dem neu erreichten Zustand verglichen.  
+
+\subsubsection{Umsetzung im Projekt}
+Was die Struktur der Ordner betrifft, so hatte diese im Ausgangszustand die in \autoref{subfig:mvn_ordner_ausgang} dargestellte Struktur. Die neue Ordnerstruktur ist in \autoref{subfig:mvn_ordner_neu} zu sehen. Der Übersichtlichkeit halber werden nicht alle Dateien, die sich in den Ordnern befinden, dargestellt.\\
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.4\textwidth}
+\dirtree{%
+ .1 /.
+ .2 Res.
+ .2 jar.
+ .3 json-simple.jar.
+ .2 src.
+ .3 anwendungsschicht.
+ .3 gui.
+ .3 spielansichtsschicht.
+ .3 spiellogikschicht.
+ .2 test.
+}
+\subcaption{Ausgangszustand}
+\label{subfig:mvn_ordner_ausgang}
+\end{minipage}
+\qquad
+\begin{minipage}{0.4\textwidth}
+\dirtree{%
+ .1 /.
+ .2 Res.
+ .2 src.
+ .3 main.
+ .4 anwendungsschicht.
+ .4 gui.
+ .4 spielansichtsschicht.
+ .4 spiellogikschicht.
+ .2 test.
+}
+\subcaption{Neue Struktur}
+\label{subfig:mvn_ordner_neu}
+\end{minipage}
+\caption{Ordnerstruktur im Vergleich}
+\label{fig:mvn_ordner}
+\end{figure}
+
+Hier ist sofort zu erkennen, dass der Ordner \texttt{jar}, welcher externe Pakete beinhaltet,  entfernt werden konnte. Somit ist auch das externe Paket \texttt{json-simple.jar} aus dem Verzeichnis entfernt worden. Des Weiteren sind die internen Pakete, die sich im Ordner \texttt{src} befunden haben, in das neue Unterverzeichnis \texttt{main} verschoben worden. Der Rest der ursprünglichen Ordnerstruktur ist beibehalten worden.\\ 
+Das oben genannte externe Paket \texttt{json-simple.jar} konnte aus dem Verzeichnis entfernt werden, da Maven das Herunterladen dieses Paketes unterstützt, wie im vorherigen Abschnitt erläutert. Dies erfolgt durch das Angeben einer Abhängigkeit zu diesem Paket in der Konfigurationsdatei, die Maven für das Erstellen des Projektes verwendet. Das Rennspielframework hat im Laufe des Projekts Abhängigkeiten zu den folgenden externen Pakten entwickelt:
+\begin{itemize}
+	\item \texttt{JSON-simple}
+	\item \texttt{JUnit}
+	\item \texttt{LWJGL}
+	\item \texttt{JOML}
+\end{itemize}
+Was das Ausführen des Rennspiels im Ausgangszustand dieses Projekts betrifft, so erfolgte dies mittels Befehlen über die Kommandozeile, was das Kompilieren der Java-Dateien und Verpacken der erzeugten Dateien mit Angabe der Klasse, welche die Main-Funktion beinhaltet. Hinzukommend mussten die externen Pakete im Verpackungsschritt angegeben werden. Nun übernimmt Maven das Ausführen dieser Schritte, um die ausführbare Jar-Datei zu erzeugen, was mit einem einzigen Kommandozeilenaufruf erfolgt. Hinzukommend werden die implementierten Modultests, welche sich im \texttt{test}-Verzeichnis (siehe \autoref{subfig:mvn_ordner_neu}) befinden, ausgeführt. Falls mindestens ein Modultest als nicht erfolgreich markiert wird, so wird das weitere Verpacken des Projekts unterbrochen. Dies hat die Intention, dass das Verbreiten eines fehlerhaften Zustands des Projekts verhindert werden soll.\\
+Abschließend wird ein Fazit für die Umsetzung von Maven für das Rennspielframework gezogen. Folgende Vorteile haben sich hierbei ergeben:
+\begin{itemize}
+	\item Eine positive Eigenschaft, die von Maven übernommen wird, ist, dass die Entwickler externe Pakete nicht eigenständig herunterladen und dem Projekt und somit auch der Versionsverwaltung hinzufügen müssen. 
+	\item Das weitere Hinzufügen externer Pakete und somit dem Erweitern des Rennspielframeworks ist nun vereinfacht. 
+	\item Die Hauptintention ist es, den Prozess, eine ausführbare Datei des Rennspielframeworks zu erzeugen, zu vereinfachen. Dies ist mit der Umstellung auf Maven erreicht worden, da nun ein einziger Kommandozeilenaufruf dies erfüllt.
+	\item Des Weiteren ist sichergestellt, dass das Verwalten des Projekts für neue Entwickler und auch für andere Teams, die das Projekt in Zukunft übernehmen werden, vereinfacht ist.
+\end{itemize}
+
+
+
+
