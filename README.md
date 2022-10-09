@@ -22,3 +22,8 @@ trivial:
 
 astern:
 - java -cp target/Rennspielframework-0.0.1-SNAPSHOT.jar anwendungsschicht.RennspielStart client 8000 localhost KI astern
+
+Entwickler-Team:
+- Lanzl Josef
+- Meixner Simon
+- Zimmer André
