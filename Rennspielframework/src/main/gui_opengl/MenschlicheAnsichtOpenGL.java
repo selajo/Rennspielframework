@@ -4,6 +4,9 @@ import anwendungsschicht.Spieloptionen;
 import spielansichtsschicht.ISpielAnsicht;
 import spielansichtsschicht.SpielAnsichtTyp;
 
+/**
+ * Ansicht für die menschliche Ansicht
+ */
 public class MenschlicheAnsichtOpenGL implements ISpielAnsicht {
 
     Window window;

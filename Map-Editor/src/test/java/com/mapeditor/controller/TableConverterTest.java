@@ -1,7 +1,6 @@
 package com.mapeditor.controller;
 
-import com.mapeditor.app.TileTableModel;
-import org.junit.Assert;
+import com.mapeditor.view.TileTableModel;
 import org.junit.Test;
 
 import javax.swing.*;

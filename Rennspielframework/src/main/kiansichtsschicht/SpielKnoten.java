@@ -8,36 +8,71 @@ import anwendungsschicht.Spieloptionen;
 
 public class SpielKnoten implements Comparable {
 
-	SpielGraph graph;
-
+	/**
+	 * x-Kooridnate eines Tiles
+	 */
 	int tileX;
+	/**
+	 * y-Kooridnate eines Tiles
+	 */
 	int tileY;
 
+	/**
+	 * Tilenummer: Tile-Beschaffenheit
+	 */
 	int mapTileNummer;
 
+	/**
+	 * Reibung eines Tiles
+	 */
 	double reibung;
+	/**
+	 * Kollision
+	 */
 	boolean collision;
+	/**
+	 * Zeigt als boolean, ob es sich um den Zielknoten handelt
+	 */
 	boolean ziel;
+	/**
+	 * zeigt als boolean, ob es sich um einen Checkpoint handelt
+	 */
 	boolean checkpoint;
-
-	//boolean asphalt;
-
-	boolean startPunkt = false; // per Default --> außer StartKnoten
-
+	/**
+	 * zeigt als boolean, ob es sich um den Startknoten handelt
+	 */
+	boolean startPunkt = false;
+	/**
+	 * ist ein Knoten bereits bearbeitet
+	 */
 	boolean gesehen;
-
+	/**
+	 * ist ein Knoten Element des kürzesten berechneten Pfades
+	 */
 	boolean kiPfadElement;
-
+	/**
+	 * Vorgängnerknoten
+	 */
 	public SpielKnoten parent;
-
+	/**
+	 * ArrayListe aller Nachbarknoten
+	 */
 	ArrayList<SpielKnoten> nachbarn = null;
 
+	/**
+	 * relevant für Graphalgorithmen
+	 */
 	private double kosten, heuristik, funktion, distanz;
-
 	private boolean valide;
+
+	/**
+	 * Ausrichtung eine Knoten zu einem anderen
+	 */
 	private SpielKnoten.Direction Direction;
 
-
+	/**
+	 * java-enum mit allen möglichen Himmelsrichtungen
+	 */
 	private enum Direction {
 		NULL,
 		NORDEN,
@@ -50,14 +85,21 @@ public class SpielKnoten implements Comparable {
 		SÜDWEST
 	}
 
+	/**
+	 * Spieloptionen des Rennspiels
+	 */
 	Spieloptionen optionen;
 
+	/**
+	 * erzeugt einen Spielknoten
+	 * @param tileX
+	 * @param tileY
+	 */
 	public SpielKnoten(int tileX, int tileY) {
 		optionen = Spieloptionen.getInstance();
 
 		this.tileX = tileX;
 		this.tileY = tileY;
-		//this.graph = graph;
 
 		this.mapTileNummer = optionen.mapTileNum[tileX][tileY]; //Hole den Kartentyp
 
@@ -66,13 +108,22 @@ public class SpielKnoten implements Comparable {
 		this.reibung = (double) o[2];
 		this.collision = (boolean) o[3];
 		this.ziel = (boolean) o[4];
-		//this.asphalt = (boolean) o[5];
 		this.checkpoint = false;
 		this.valide = true;
 		this.Direction = null;
-		//System.out.println(tileX + " " + tileY + " " + reibung + "\n");
+
+		this.gesehen = false;
+		this.parent = null;
+		this.distanz = Double.MAX_VALUE;
 	}
 
+	/**
+	 * finde einen bestimmten Spielknoten
+	 * @param x
+	 * @param y
+	 * @param spielKnoten
+	 * @return
+	 */
 	public SpielKnoten find(int x, int y, ArrayList<SpielKnoten> spielKnoten) {
 		for (SpielKnoten sk : spielKnoten) {
 			if (sk.tileX == x && sk.tileY == y)
@@ -81,7 +132,10 @@ public class SpielKnoten implements Comparable {
 		return null;
 	}
 
-
+	/**
+	 * ermittle Nachbarknoten und deren Ausrichtung
+	 * @param tiles
+	 */
 	public void berechneNachbarn(ArrayList tiles) {
 
 		ArrayList<SpielKnoten> Knoten = new ArrayList<>();
@@ -159,7 +213,6 @@ public class SpielKnoten implements Comparable {
 				Knoten.add(nachbarSpielKnoten); //southwest
 			}
 		}
-		//System.out.println(Knoten);
 		setNachbarKnoten(Knoten);
 	}
 
@@ -167,15 +220,29 @@ public class SpielKnoten implements Comparable {
 		this.nachbarn = nachbarn;
 	}
 
+	/**
+	 * Distanzfunktion der Graphalgorithmen
+	 * @param dest
+	 * @return
+	 */
 	public double distanzZu(SpielKnoten dest) {
 		SpielKnoten d = dest;
 		return new Point(tileX, tileY).distance(new Point(d.tileX, d.tileY));
 	}
 
+	/**
+	 * Heuristik von A*
+	 * @param dest
+	 * @return
+	 */
 	public double heuristik(SpielKnoten dest) {
 		return distanzZu(dest);
 	}
 
+	/**
+	 * dijkstras züruckgehen zum Startknoten vom Zielknoten aus
+	 * @return
+	 */
 	public double berechneEntfernungRekursiv() {
 		double entfernung = 0;
 		if (this.getParent() != null) {
@@ -190,7 +257,7 @@ public class SpielKnoten implements Comparable {
 				entfernung = entfernungVorgaenger;
 			}
 
-		} else if (!this.startPunkt) {
+		} else if (!startPunkt) {
 			// Kein Vorgänger und kein Startpunkt
 			entfernung = -1;
 		} else {
@@ -203,7 +270,6 @@ public class SpielKnoten implements Comparable {
 
 	@Override
 	public int compareTo(Object o) {
-		// NullPointerException und ClassCastException dürfen von der Methode geworfen werden
 		SpielKnoten k = (SpielKnoten) o;
 		double differenz = this.distanz - k.distanzZu(this);
 		if (differenz == 0) {
@@ -215,14 +281,9 @@ public class SpielKnoten implements Comparable {
 		}
 	}
 
-	public void removeNachbarKnoten(int x, int y) {
-		for (int i = 0; i < nachbarn.size(); i++) {
-			SpielKnoten sk = nachbarn.get(i);
-			if (tileX == x && tileY == y) {
-				nachbarn.remove(i);
-			}
-		}
-	}
+	/**
+	 * Nachfolgend noch getter und setter zu diversen member
+	 */
 
 	public ArrayList<SpielKnoten> getNachbarKnoten() {
 		return nachbarn;

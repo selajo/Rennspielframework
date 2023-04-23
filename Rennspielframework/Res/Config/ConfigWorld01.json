@@ -11,7 +11,7 @@
 
 	"titel": "2D Rennspiel Andre Zimmer",
 	"spiellaenge": "60",
-	"spielmodus": 1,
+	"spielmodus": 2,
 
 	
 	"spielfeld": "/Map/WorldComplete01.txt",

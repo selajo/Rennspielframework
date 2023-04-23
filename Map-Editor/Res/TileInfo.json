@@ -275,45 +275,391 @@
 			"ziel": "true"
 		},
 		{
+			"nummer": 48,
+			"name": "Ziel_48",
+			"pfad": "/Tiles/Newversion/Ziel03_48.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "true"
+		},
+		{
+			"nummer": 49,
+			"name": "Ziel_49",
+			"pfad": "/Tiles/Newversion/Ziel04_49.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "true"
+		},
+		{
 			"nummer": 50,
-			"name": "Asphalt_50",
-			"pfad": "/Tiles/Newversion/asphalt00_50.png",
-			"reibung": "0.5",
+			"name": "Eis_Strasse_50",
+			"pfad": "/Tiles/Newversion/iceroad00_50.png",
+			"reibung": "1.0",
 			"collision": "false",
 			"ziel": "false"
 		},
+		
 		{
 			"nummer": 51,
-			"name": "Asphalt_51",
-			"pfad": "/Tiles/Newversion/asphalt01_51.png",
-			"reibung": "0.5",
+			"name": "Eis_Strasse_51",
+			"pfad": "/Tiles/Newversion/iceroad01_51.png",
+			"reibung": "0.8",
 			"collision": "false",
 			"ziel": "false"
 		},
 		{
 			"nummer": 52,
-			"name": "Asphalt_52",
-			"pfad": "/Tiles/Newversion/asphalt02_52.png",
-			"reibung": "0.5",
+			"name": "Eis_Strasse_52",
+			"pfad": "/Tiles/Newversion/iceroad02_52.png",
+			"reibung": "0.8",
 			"collision": "false",
 			"ziel": "false"
 		},
 		{
 			"nummer": 53,
-			"name": "Asphalt_53",
-			"pfad": "/Tiles/Newversion/asphalt03_53.png",
-			"reibung": "0.5",
+			"name": "Eis_Strasse_53",
+			"pfad": "/Tiles/Newversion/iceroad03_53.png",
+			"reibung": "0.8",
 			"collision": "false",
 			"ziel": "false"
 		},
 		{
 			"nummer": 54,
-			"name": "Asphalt_54",
-			"pfad": "/Tiles/Newversion/asphalt04_54.png",
+			"name": "Eis_Strasse_54",
+			"pfad": "/Tiles/Newversion/iceroad04_54.png",
+			"reibung": "0.8",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 55,
+			"name": "Eis_Strasse_55",
+			"pfad": "/Tiles/Newversion/iceroad05_55.png",
+			"reibung": "0.8",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 56,
+			"name": "Eis_Strasse_56",
+			"pfad": "/Tiles/Newversion/iceroad06_56.png",
+			"reibung": "0.8",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 57,
+			"name": "Eis_Strasse_57",
+			"pfad": "/Tiles/Newversion/iceroad07_57.png",
+			"reibung": "0.8",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 58,
+			"name": "Eis_Strasse_58",
+			"pfad": "/Tiles/Newversion/iceroad08_58.png",
+			"reibung": "0.8",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 59,
+			"name": "Eis_Strasse_59",
+			"pfad": "/Tiles/Newversion/iceroad09_59.png",
+			"reibung": "0.3",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 60,
+			"name": "Eis_Strasse_60",
+			"pfad": "/Tiles/Newversion/iceroad10_60.png",
+			"reibung": "0.3",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 61,
+			"name": "Eis_Strasse_61",
+			"pfad": "/Tiles/Newversion/iceroad11_61.png",
+			"reibung": "0.3",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 62,
+			"name": "Eis_Strasse_62",
+			"pfad": "/Tiles/Newversion/iceroad12_62.png",
+			"reibung": "0.3",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 63,
+			"name": "Eis_Strasse_63",
+			"pfad": "/Tiles/Newversion/iceroad13_63.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 64,
+			"name": "Eis_Strasse_64",
+			"pfad": "/Tiles/Newversion/iceroad14_64.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 65,
+			"name": "Eis_Wasser_65",
+			"pfad": "/Tiles/Newversion/icewater01_65.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 66,
+			"name": "Eis_Wasser_66",
+			"pfad": "/Tiles/Newversion/icewater02_66.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 67,
+			"name": "Eis_Wasser_67",
+			"pfad": "/Tiles/Newversion/icewater03_67.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 68,
+			"name": "Eis_Wasser_68",
+			"pfad": "/Tiles/Newversion/icewater04_68.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 69,
+			"name": "Eis_Wasser_69",
+			"pfad": "/Tiles/Newversion/icewater05_69.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 70,
+			"name": "Eis_Wasser_70",
+			"pfad": "/Tiles/Newversion/icewater06_70.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 71,
+			"name": "Eis_Wasser_71",
+			"pfad": "/Tiles/Newversion/icewater07_71.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 72,
+			"name": "Eis_Wasser_72",
+			"pfad": "/Tiles/Newversion/icewater08_72.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 73,
+			"name": "Eis_Wasser_73",
+			"pfad": "/Tiles/Newversion/icewater09_73.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 74,
+			"name": "Eis_Wasser_74",
+			"pfad": "/Tiles/Newversion/icewater10_74.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 75,
+			"name": "Eis_Wasser_75",
+			"pfad": "/Tiles/Newversion/icewater11_75.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 76,
+			"name": "Eis_Wasser_76",
+			"pfad": "/Tiles/Newversion/icewater12_76.png",
+			"reibung": "1.0",
+			"collision": "true",
+			"ziel": "false"
+		},
+		{
+			"nummer": 77,
+			"name": "Eis_Change_77",
+			"pfad": "/Tiles/Newversion/icechange01_77.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 78,
+			"name": "Eis_Change_78",
+			"pfad": "/Tiles/Newversion/icechange02_78.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 79,
+			"name": "Eis_Change_79",
+			"pfad": "/Tiles/Newversion/icechange03_79.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 80,
+			"name": "Eis_Change_80",
+			"pfad": "/Tiles/Newversion/icechange04_80.png",
+			"reibung": "1.0",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 81,
+			"name": "Eis_Change_81",
+			"pfad": "/Tiles/Newversion/icechange05_81.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 82,
+			"name": "Eis_Change_82",
+			"pfad": "/Tiles/Newversion/icechange06_82.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 83,
+			"name": "Eis_Change_83",
+			"pfad": "/Tiles/Newversion/icechange07_83.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 84,
+			"name": "Eis_Change_84",
+			"pfad": "/Tiles/Newversion/icechange08_84.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 85,
+			"name": "Eis_Change_85",
+			"pfad": "/Tiles/Newversion/icechange09_85.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 86,
+			"name": "Eis_Change_86",
+			"pfad": "/Tiles/Newversion/icechange10_86.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 87,
+			"name": "Eis_Change_87",
+			"pfad": "/Tiles/Newversion/icechange11_87.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 88,
+			"name": "Eis_Change_88",
+			"pfad": "/Tiles/Newversion/icechange12_88.png",
+			"reibung": "0.7",
+			"collision": "false",
+			"ziel": "false"
+		},
+{
+			"nummer": 89,
+			"name": "Oil_89",
+			"pfad": "/Tiles/Newversion/oilroad_89.png",
+			"reibung": "0.1",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 90,
+			"name": "Eis_Oil_90",
+			"pfad": "/Tiles/Newversion/oiliceroad_90.png",
+			"reibung": "0.1",
+			"collision": "false",
+			"ziel": "false"
+		},		
+		{
+			"nummer": 100,
+			"name": "Asphalt_100",
+			"pfad": "/Tiles/Newversion/asphalt00_100.png",
+			"reibung": "0.5",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 101,
+			"name": "Asphalt_101",
+			"pfad": "/Tiles/Newversion/asphalt01_101.png",
+			"reibung": "0.5",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 102,
+			"name": "Asphalt_102",
+			"pfad": "/Tiles/Newversion/asphalt02_102.png",
+			"reibung": "0.5",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 103,
+			"name": "Asphalt_103",
+			"pfad": "/Tiles/Newversion/asphalt03_103.png",
+			"reibung": "0.5",
+			"collision": "false",
+			"ziel": "false"
+		},
+		{
+			"nummer": 104,
+			"name": "Asphalt_104",
+			"pfad": "/Tiles/Newversion/asphalt04_104.png",
 			"reibung": "0.5",
 			"collision": "false",
 			"ziel": "false"
 		}
+		
 	]
 
 

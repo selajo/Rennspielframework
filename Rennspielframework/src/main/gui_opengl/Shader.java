@@ -12,6 +12,9 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glUniform1iv;
 
+/**
+ * Klasse, die einen Shader einlies, linked und ausführt
+ */
 public class Shader {
 
     public int shaderProgramID;
@@ -21,6 +24,10 @@ public class Shader {
     private String fragmentSource;
     private String filepath;
 
+    /**
+     * Konstruktor der eine Pfadeingabe bekommt und den Shader ausließt
+     * @param filepath
+     */
     public Shader(String filepath) {
         this.filepath = filepath;
         try {
@@ -29,12 +36,12 @@ public class Shader {
 
             // Find the first pattern after #type 'pattern'
             int index = source.indexOf("#type") + 6;
-            int eol = source.indexOf("\r\n", index);
+            int eol = source.indexOf("\n", index);
             String firstPattern = source.substring(index, eol).trim();
 
             // Find the second pattern after #type 'pattern'
             index = source.indexOf("#type", eol) + 6;
-            eol = source.indexOf("\r\n", index);
+            eol = source.indexOf("\n", index);
             String secondPattern = source.substring(index, eol).trim();
 
             if (firstPattern.equals("vertex")) {
@@ -58,6 +65,9 @@ public class Shader {
         }
     }
 
+    /**
+     * Ausfuehren eines Programmes
+     */
     public void compile() {
 
         // ============================================================

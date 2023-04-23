@@ -12,52 +12,85 @@ import java.util.*;
  */
 public abstract class AKI {
 
+    static Logger logger = LogManager.getLogger(AKI.class);
     /**
-     * Berechne zu fahrende Richtung und schicke Richtung an Server.
+     * Richtungen die an Server zurückgesendet werden
      */
-
-    static final Logger logger = LogManager.getLogger(AKI.class);
-
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean zurueckAufStrasse;
+    /**
+     * Löst die Ermittlung des nächsten Checkpoints aus
+     */
     public boolean checkPointPassiert;
+    /**
+     * Zeigt an, ob Kurve voraus liegt und deshalb vom Gas gegangen werden soll
+     */
     public boolean habeGebremst = false;
-
+    /**
+     * Eigene Position
+     */
     public int saveMapTileX, saveMapTileY;
 
     public String richtung = null;
     public String saveDirection;
 
     public SpielGraph spielGraph;
+    /**
+     * Stellt Input vom Server zur Verfügung
+     */
     public KISpielObjekteManager manager;
 
-
-    public SpielKnoten StartKnoten; //Eigene Position
-    public SpielKnoten ZielKnoten; //Nächster Checkpoint in der Liste
+    /**
+     * StartKnoten ist immer eigene Position des Clients
+     */
+    public SpielKnoten StartKnoten;
+    /**
+     * ZielKnoten ist immer nächster ermittelter Checkpoint
+     */
+    public SpielKnoten ZielKnoten;
+    /**
+     *  Merke den aktuellen Knoten und die aktuelle Richtung für den Bremsvorgang
+     */
     public SpielKnoten SpielKnotenSpeicher;
+    /**
+     * Relevant für Graphalgorithmus Berechnungen
+     */
     public SpielKnoten nächsterSpielKnoten;
     public SpielKnoten aktuellerSpielKnoten;
 
+    /**
+     * kürzester errechneter Pfad
+     */
     public ArrayList<SpielKnoten> Strecke;
 
-    public TileKoordinate tileKoordinate;
-
+    /**
+     * hilft, den richtigen nächsten Checkpoint auszuwählen
+     */
     int checkPointCounter = 1;
 
     CheckpointManager checkpointManager;
 
     Map<Integer, List<TileKoordinate>> checkPunktMap;
 
+    /**
+     * für künftigen Kollisionscheck
+     */
     boolean kollidiert;
-
+    /**
+     * ist eine Runde erfolgreich abgeschlossen
+     */
     boolean rundeBeendet;
 
 
-
+    /**
+     * Sendet Richtung an Server über 4 boolean Member zurück; wird von jedem Client selbst implementiert
+     */
     public abstract void update();
 
-
-
+    /**
+     * Erst wenn StartUp erfolgreich können die Graphalgorithmen los rechnen
+     * @return boolean
+     */
     public boolean graphAlgorithmusStartUp(){
 
         checkPointPassiert = false;
@@ -96,14 +129,13 @@ public abstract class AKI {
             logger.error("Kein Start und kein Ziel!");
         }
 
-        System.out.println(StartKnoten);
-        System.out.println(ZielKnoten);
-
         return (StartKnoten != null) && (ZielKnoten != null);
 
     }
 
-
+    /**
+     * aus dem kürzesten ermittelten Pfad wird die Richtung ermittelt, die als nächstes an den Server zurückgesendet werden soll
+     */
     public void graphAlgorithmusRichtungsentscheidung(){
 
         // Strecke kommt vom Algortihmus und muss noch umgedreht werden
@@ -112,7 +144,6 @@ public abstract class AKI {
         spielGraph.printGraph(Strecke);// optional
 
         // Der Nächste angepeilte Knoten ist der vorletzte des Streckenarrays
-        //SpielKnoten nächsterSpielKnoten = new SpielKnoten(0,0);
         if (Strecke.size() > 1) {
             nächsterSpielKnoten = Strecke.get(1);
         }else if (Strecke.size() == 1){
@@ -142,7 +173,9 @@ public abstract class AKI {
     }
 
 
-
+    /**
+     * Wenn Wand-Tile erkannt wird soll in die entgegengesetzte Richtung gesteuert werden
+     */
     public void wendeKollisionmitWandAb(){
         zurueckAufStrasse = true;
 
@@ -177,6 +210,9 @@ public abstract class AKI {
 
     }
 
+    /**
+     * umliegende Tiles werden auf Wand-Beschaffenheit geprüft, um Umkehr-Vorgang einzuleiten
+     */
     public void checkKollisionMitWandKnoten(){
         SpielKnoten aktuellePosition = spielGraph.alleSpielKnoten[saveMapTileY][saveMapTileX];
         aktuellePosition.berechneNachbarn(spielGraph.getAlleSpielKnotenAlsArrayList());
@@ -234,10 +270,8 @@ public abstract class AKI {
 
         if (!habeGebremst){
             if (SpielKnotenSpeicher != null) {
-                //System.out.println(SpielKnotenSpeicher.getParent());
                 if (SpielKnotenSpeicher.getParent() != null) {
                     if (SpielKnotenSpeicher.getParent().getDirection() != null) {
-                        //System.out.println(SpielKnotenSpeicher.getParent().getDirection());
                         // nur einmal kurz abbremsen vor Kurve
                         richtung = bremseVorKurve(richtung);
                     }
@@ -252,12 +286,17 @@ public abstract class AKI {
         }
     }
 
-
+    /**
+     * immer zum Start notwendig
+     */
     public void resetPressed() {
         // nothing pressed
         upPressed = downPressed = leftPressed = rightPressed = false;
     }
 
+    /**
+     * Überprüfung ob man von der Strecke abgekommen ist
+     */
     public void vomWegAbgekommen() {
         zurueckAufStrasse = true;
         String richtung = saveDirection;
@@ -286,6 +325,10 @@ public abstract class AKI {
         pressRichtung(richtung);
     }
 
+    /**
+     * Richtung die an Server zurückgesendet werden soll, wird vorbereitet
+     * @param richtung: ermittelt durch graphAlgorithmusRichtungsEntscheidung() (nicht in TrivialeKI)
+     */
     public void pressRichtung(String richtung) {
         resetPressed();
         //logger.info("richtung: " + richtung);
@@ -312,51 +355,41 @@ public abstract class AKI {
         }
     }
 
+    /**
+     * tatsächliches zurück Senden an Server
+     */
     public void schickeRichtung() {
-        manager.event.notify("key_event", 2, upPressed, downPressed, leftPressed, rightPressed);
+        manager.event.notify("key_event", manager.optionen.spielerID, upPressed, downPressed, leftPressed, rightPressed);
     }
 
-    /*
-    public void checkPointPassiertCheck(){
-        // Funktion soll ermitteln ob ein CheckPoint passiert ist um damit ein umdrehen des Clients zu verhindern
-        if(richtung == "left" && saveMapTileX <= ZielKnoten.tileX )
-            checkPointPassiert = true;
-        else if(richtung == "up" && saveMapTileY <= ZielKnoten.tileY )
-            checkPointPassiert = true;
-        else if(richtung == "right" && saveMapTileX >= ZielKnoten.tileX )
-            checkPointPassiert = true;
-        else if(richtung == "down" && saveMapTileY >= ZielKnoten.tileY )
-            checkPointPassiert = true;
-        else if(richtung == "up+right" && saveMapTileX >= ZielKnoten.tileX )
-            checkPointPassiert = true;
-        else if(richtung == "up+left" && saveMapTileX <= ZielKnoten.tileX )
-            checkPointPassiert = true;
-        else if(richtung == "down+right" && saveMapTileX >= ZielKnoten.tileX )
-            checkPointPassiert = true;
-        else if(richtung == "down+left" && saveMapTileX <= ZielKnoten.tileX)
-            checkPointPassiert = true;
-       }
-
-       */
-       public void checkPointPassiertCheck(Map<Integer, List<TileKoordinate>> checkPointMap){
-
-        //Map<Integer, List<TileKoordinate>> checkPointMap = spielGraph.checkPoints;
+    /**
+     * überprüft ob ein Checkpoint erreicht wurde
+     * @param checkPointMap
+     */
+    public void checkPointPassiertCheck(Map<Integer, List<TileKoordinate>> checkPointMap){
 
         List nextCheckPointList = checkPointMap.get(checkPointCounter);
 
         if (nextCheckPointList != null) {
             for (int i = 0; i < nextCheckPointList.size(); i++){
                 TileKoordinate tileKoordinate = (TileKoordinate) nextCheckPointList.get(i);
-                if (tileKoordinate.getTileX() == saveMapTileX && tileKoordinate.getTileY() == saveMapTileY )
+                if (tileKoordinate.getTileX() == saveMapTileX && tileKoordinate.getTileY() == saveMapTileY ) {
                     checkPointPassiert = true;
-                break;
+                    break;
+                }
             }
         }
     }
 
-
+    /**
+     * nächster Checkpoint in der Liste wird ausgemacht und dient dadurch als neuer ZielKnoten
+     * @param checkPointMap
+     * @return
+     */
     public SpielKnoten ermittleNächstenCheckpoint(Map<Integer, List<TileKoordinate>> checkPointMap){
-        //System.out.println(optionen.checkpointListe);
+
+        spielGraph = new SpielGraph();
+
         if (checkPointCounter == checkPointMap.size() + 1){
             checkPointCounter = 1;
             rundeBeendet = true;
@@ -372,6 +405,11 @@ public abstract class AKI {
         return null;
     }
 
+    /**
+     * randomisiertes auswählen eines einzigen Tiles eines Checkpoints/Referenzpunktes
+     * @param checkpointList: 1 Checkpoint besteht i.d.R aus zwei Tiles
+     * @return
+     */
     public TileKoordinate randomTileVonCheckpoint(List checkpointList){
         //wähle ein einziges Tile des CheckpointsListe als ZielKnoten
         List checkpointTiles = checkpointList;
@@ -380,6 +418,10 @@ public abstract class AKI {
         return randomTile;
     }
 
+    /**
+     * randomiserter Wert
+     * @return integer: 0 oder 1
+     */
     public int getRandomTileIndex(){
         Random r = new Random();
         int max = 1;
@@ -389,15 +431,18 @@ public abstract class AKI {
     }
 
 
-
+    /**
+     * speichert eigene Position des Clients
+     * @param richtung
+     */
     public void saveMapTile(String richtung){
+
         TileKoordinate save = manager.getTileKoordinate(manager.posX, manager.posY);
 
         if (save.getTileX() != saveMapTileX || save.getTileY() != saveMapTileY){
             saveMapTileX = save.getTileX();
             saveMapTileY = save.getTileY();
             saveDirection = richtung;
-            //System.out.println("New save: " + saveMapTileX + ", " + saveMapTileY);
         }
         //Wichtig, da sonst die Parents eine Endlosschleife verursachen
         SpielKnoten aktuell = spielGraph.alleSpielKnoten[saveMapTileY][saveMapTileX];
@@ -405,9 +450,16 @@ public abstract class AKI {
     }
 
 
-
+    /**
+     * relevant für vomWegAbgekommen(): überprüft ob eigen Position außerhalb der Rennstrecke liegt
+     * @param posX
+     * @param posY
+     * @return
+     */
     public boolean checkStrasse(double posX, double posY) {
+
         boolean erlaubt = false;
+
         switch (manager.getTileTypVonPosition(posX, posY)) {
             case 45:
             case 11:
@@ -421,6 +473,11 @@ public abstract class AKI {
         return  erlaubt;
     }
 
+    /**
+     * umwandlung der Himmelsrichtung in Richtung die an Server geschickt werden kann
+     * @param direction
+     * @return
+     */
     public String getRichtungVonDirection(String direction){
         switch (direction){
             case "NORDEN":
@@ -449,12 +506,15 @@ public abstract class AKI {
         return direction;
     }
 
-
+    /**
+     * Richtung null an server gesendet um vor Kurve kurz vom Gas zu gehen
+     * @param richtung
+     * @return
+     */
     public String bremseVorKurve(String richtung){
         // wenn "Quergehen" startet, liegt eine Kurve voraus
         if (richtung == "up+left" || richtung == "up+right" || richtung == "down+right" || richtung == "down+left"){
             richtung = null;
-            // System.out.println("Ich gehe kurz vom Gas!");
         }
         return richtung;
     }

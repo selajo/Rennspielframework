@@ -86,7 +86,7 @@ public class Controller {
             g2.drawString("Spiel vorbei", spielDaten.bildschirmBreite/2-200, spielDaten.bildschirmHoehe/5);
 
             for(int i = 0; i < ansicht.finaleSpieldaten.length/3; i++) {
-            	String string = " Spieler " + ansicht.finaleSpieldaten[3*i] + ": " + ansicht.finaleSpieldaten[3*i+1] + " Runden mit Bestzeit von: " + ansicht.finaleSpieldaten[3*i+2]+  " Sek/Runde";
+            	String string = " Spieler " + ansicht.finaleSpieldaten[3*i] + ": " + ansicht.finaleSpieldaten[3*i+1] + " Runden mit Bestzeit von: " + ansicht.finaleSpieldaten[3*i+2]+  " Sekunden pro Runde";
             	g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 
                  g2.setColor(Color.WHITE);

@@ -22,7 +22,14 @@ public class TileController {
      * Tile-IDs, die das Ziel darstellen.
      */
     public final int[] ziel = new int[]{45, 46, 47};
-
+    /**
+     * Festlegen der Bildschirmgroesse default auf 30 Spalten
+     */
+    public int maxBildschirmSpalten = 30;
+    /**
+     * Festlegen der Bildschirmgrosse default auf 20 Zeilen
+     */
+    public int maxBildschirmZeilen = 20;
     /**
      * ID der Grass-Tiles
      */
@@ -141,9 +148,11 @@ public class TileController {
      * False: Datei existiert bereits oder ein Fehler ist aufgetreten.
      */
     public boolean writeCompleteData(String mapName, String map) {
-        String completeMap =    FLAG_map + map +
+        String completeMap =    FLAG_map + this.maxBildschirmSpalten + " " +
+                                this.maxBildschirmZeilen + "\n" + map +
                                 FLAG_startpos + startposition +
                                 FLAG_checkpunkte + checkpunkte;
+        System.out.println(completeMap);
         boolean mapRet = tileReader.writeToFile(mapName + ".txt", completeMap);
         boolean configRet = tileReader.saveConfig(mapName);
 

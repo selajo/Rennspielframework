@@ -9,6 +9,9 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 
+/**
+ * Klasse, die eine Textur repäsentiert
+ */
 public class Texture {
     private String filepath;
     private transient int texID;
@@ -31,6 +34,12 @@ public class Texture {
                 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     }
 
+    /**
+     * Gerierung einer Textur aus einem ByteBuffer Image
+     * @param width
+     * @param height
+     * @param image
+     */
     public void generate(int width, int height,ByteBuffer image ){
         this.width = width;
         this.height = height;
@@ -95,6 +104,10 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D,0);
     }
 
+    /**
+     * Initialisierungsfunktion
+     * @param filepath
+     */
     public void init(String filepath) {
         this.filepath = filepath;
 

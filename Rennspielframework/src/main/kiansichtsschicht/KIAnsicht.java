@@ -1,8 +1,12 @@
 package kiansichtsschicht;
 
+import anwendungsschicht.CLI;
 import spielansichtsschicht.ISpielAnsicht;
 import spielansichtsschicht.SpielAnsichtTyp;
 
+/**
+ * Stellt die Ansicht der KI-Spieler dar
+ */
 public class KIAnsicht implements ISpielAnsicht {
 
 	/**
@@ -20,10 +24,8 @@ public class KIAnsicht implements ISpielAnsicht {
 	 * Konstruktor mit mitgelieferten Argumenten
 	 * @param args
 	 */
-	public KIAnsicht(String [] args){
-		kiTyp = KontextKI.ermittleKI(args[4]);
-
-		System.out.println("KI-Ansicht wird gestartet");
+	public KIAnsicht(){
+		kiTyp = KontextKI.ermittleKI(CLI.getKIArt());
 	}
 
 

@@ -12,14 +12,33 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Stellt den globalen Ansprechpartner der KIs dar.
+ * Fuehrt das update-event aus
+ */
 public class KISpielObjekteManager implements EventListener {
-
+    /**
+     * Verwaltet eingehende Events
+     */
     EventManager event;
+
+    /**
+     * Stellt die globalen Spielinformationen dar
+     */
     public Spieloptionen optionen;
 
+    /**
+     * Aktuelle Richtung des Spielers
+     */
     String direction;
+    /**
+     * Aktuelle Position des Spielers
+     */
     int posX, posY;
 
+    /**
+     * Erzeugt KISpielObjekteManager
+     */
     public KISpielObjekteManager() {
         optionen = Spieloptionen.getInstance();
         event = EventManager.getInstance();
@@ -28,18 +47,73 @@ public class KISpielObjekteManager implements EventListener {
         direction = null;
     }
 
+    /**
+     * Anzahl an Zeitmessungen, die durchgefuert wurden
+     */
+    int timeCounter = 0;
+    /**
+     * Zeit der aktuellen Messung
+     */
+    long timeGesamt = 0;
+    /**
+     * Startzeit der aktuellen Messung
+     */
+    long startTime = 0;
+
+    /**
+     * Startet den Zeitmessvorgang
+     */
+    public void zeitMessungStart() {
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Beendet den Zeitmessvorgang
+     */
+    public void zeitMessungEnde() {
+        long ende = System.currentTimeMillis() - startTime;
+        timeCounter++;
+        timeGesamt += ende;
+    }
+
+    /**
+     * Berechnet den Durchschnitt der gemessenen Zeiten
+     * @return Durchschnitt der gemessenen Zeiten
+     */
+    public long zeitMessungDurchschnitt() {
+        return timeGesamt / (long)timeCounter;
+    }
+
+    /**
+     * Liefert die aktuelle Richtung des Spielers
+     * @return die aktuelle Richtung des Spielers
+     */
     public String getDirection() {
         return direction;
     }
 
+    /**
+     * Liefert die aktuelle Spaltenposition des Spielers
+     * @return die aktuelle Spaltenposition des Spielers
+     */
     public int getPosX() {
         return posX;
     }
 
+    /**
+     * Liefert die aktuelle Zeilenposition des Spielers
+     * @return die aktuelle Zeilenposition des Spielers
+     */
     public int getPosY() {
         return posY;
     }
 
+    /**
+     * Wandelt die eingegebenen Positionen in die korresponierende Koordinate der Kachel um
+     * @param posX Spaltenposition
+     * @param posY Zeilenposition
+     * @return korresponierende Koordinate der Kachel
+     */
     public TileKoordinate getTileKoordinate(double posX, double posY) {
         Spieloptionen optionen = Spieloptionen.getInstance();
 
@@ -52,7 +126,12 @@ public class KISpielObjekteManager implements EventListener {
         return new TileKoordinate(akteurTileMitteX, akteurTileMitteY);
     }
 
-
+    /**
+     * Liefert den Tiletypen (ID) der angegebenen Position
+     * @param posX Spaltenposition
+     * @param posY Zeilenposition
+     * @return Korrespondierende Tile-ID
+     */
     public int getTileTypVonPosition(double posX, double posY) {
         Spieloptionen optionen = Spieloptionen.getInstance();
 
@@ -68,7 +147,7 @@ public class KISpielObjekteManager implements EventListener {
     @Override
     public void updateEvent(String eventType, Object... eventData) {
         if(eventType =="update_koordinate" ) {
-            if(eventData[0].equals(2)) {
+            if((int)eventData[0] == optionen.spielerID) {
                 direction = eventData[1].toString();
                 posX = (int) eventData[2];
                 posY = (int) eventData[3];

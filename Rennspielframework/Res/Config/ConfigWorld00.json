@@ -7,7 +7,7 @@
 	"maxAnzahlSpieler": "2",
 	"AnzahlRomoteSpieler": "0",
 	"AnzahlKISpieler": "0",
-	"SpielerAufServer": "true",
+	"SpielerAufServer": "false",
 
 	"titel": "2D Rennspiel Andre Zimmer",
 	"spiellaenge": "60",

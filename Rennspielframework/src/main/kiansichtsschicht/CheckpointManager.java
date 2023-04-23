@@ -2,6 +2,8 @@ package kiansichtsschicht;
 
 import anwendungsschicht.Spieloptionen;
 import anwendungsschicht.TileKoordinate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import spiellogikschicht.Tile;
 
 import java.util.*;
@@ -12,11 +14,29 @@ import java.util.stream.Stream;
  * Verwaltet die Checkpunkte, die die KI setzen kann
  */
 public class CheckpointManager {
+    /**
+     * Beschreibt die Koordianten, mit denen der CheckpointManager arbeitet
+     */
     public static class Points implements Comparable {
+        /**
+         * Spalte des Feldes
+         */
         public int x;
+        /**
+         * Reihe des Feldes
+         */
         public int y;
+        /**
+         * Richtung des Managers
+         */
         String richtung;
 
+        /**
+         * Erzeugt Points
+         * @param x Spalte
+         * @param y Reihe
+         * @param richtung Richtung
+         */
         public Points(int x, int y, String richtung) {
             this.x = x;
             this.y = y;
@@ -35,6 +55,11 @@ public class CheckpointManager {
             else return 1;
         }
 
+        /**
+         * Prueft, ob die aktuelle Instanz von Points in der Liste vorkommt
+         * @param list Zu pruefende Liste
+         * @return True: vorhanden; False: sonst
+         */
         public boolean isInArea(List<Points> list) {
             for (Points l : list) {
                 if (l.y == this.y && l.x == this.x) {
@@ -44,10 +69,16 @@ public class CheckpointManager {
             return false;
         }
 
+        /**
+         * Der umliegende Bereich (mit groesse Delta) wird der Liste hinzugefuegt
+         * @param list Zu aendernde Liste
+         * @param delta Zu vergroesserndes Delta
+         * @return Erweiterte Liste
+         */
         public List<Points> attachToList(List<Points> list, int delta) {
             List<Points> toAdd = new ArrayList<>();
             for (Points l : list) {
-                System.out.println(l.toString());
+                logger.info(l.toString());
                 toAdd.add(new Points(l.x + delta, l.y, ""));
                 toAdd.add(new Points(l.x - delta, l.y, ""));
                 toAdd.add(new Points(l.x, l.y + delta, ""));
@@ -57,11 +88,22 @@ public class CheckpointManager {
             return Stream.concat(list.stream(), toAdd.stream()).collect(Collectors.toList());
         }
 
+        /**
+         * Prueft, ob im angegebenen Bereich sich die aktuelle Instanz befindet
+         * @param list Zu pruefende Liste
+         * @param delta Zu pruefende Bereichsgroesse
+         * @return true: vorhanden; false: andernfalls
+         */
         public boolean isInArea(List<Points> list, int delta) {
             List<Points> extendedList = attachToList(list, delta);
             return isInArea(extendedList);
         }
     }
+
+    /**
+     * Fuer das Loggen zustaendig
+     */
+    static final Logger logger = LogManager.getLogger(AKI.class);
 
     /**
      * Flag, der beschreibt, ob der CheckpointManager aktuell auf dem Weg zurueck ist.
@@ -78,6 +120,9 @@ public class CheckpointManager {
      */
     int checkpunktAnzahl;
 
+    /**
+     * Anzahl an Checkpunkten, die mit dem dynamischen Ansatz bereits ermittelt wurden
+     */
     int checkpunktMaximum = 0;
 
 
@@ -147,7 +192,7 @@ public class CheckpointManager {
      */
     private void Log(String string) {
         if (verbose) {
-            System.out.println(string);
+            logger.info("---CheckpointManager: " + string);
         }
 
     }
@@ -252,17 +297,23 @@ public class CheckpointManager {
     }
 
     /**
-     * Faehrt zu letzten bekannten Ecke zurueck. Dabei wird der aktuelle Pfad angepasst.
+     * Faehrt zur letzten bekannten Ecke zurueck. Dabei wird der aktuelle Pfad angepasst.
      */
     int zurueckZurLetztenEcke() {
         Points letzteEcke = ecken.get(ecken.size() - 1);
         Points letzterPunkt = aktuellerPfad.get(aktuellerPfad.size() - 1);
         int steps = 0;
         //So lange zurueckfahren, bis letzte Ecke erreicht
-        while (letzterPunkt.x != letzteEcke.x && letzterPunkt.y != letzteEcke.y) {
+        while (true) {
             aktuellerPfad.remove(aktuellerPfad.size() - 1);
-            letzterPunkt = aktuellerPfad.get(aktuellerPfad.size() - 1);
             steps++;
+            if(letzterPunkt.x == letzteEcke.x && letzterPunkt.y == letzteEcke.y) {
+                break;
+            }
+            else if(aktuellerPfad.size() == 0) {
+                break;
+            }
+            letzterPunkt = aktuellerPfad.get(aktuellerPfad.size() - 1);
         }
 
         return steps;
@@ -363,11 +414,11 @@ public class CheckpointManager {
             //Ich bin im Kreis gelaufen und befinde mich auf einen bereits
             //bekannten Weg
             if (listContains(aktuellerPfad, new Points(aktuelleX, aktuelleY, richtung))) {
-                //Ich bin aktuell in keiner Sackgasse gewesen
                 if (optionen.mapTileNum[aktuelleX][aktuelleY] == 9 || optionen.mapTileNum[aktuelleX][aktuelleY] == 45) {
 
-                } else if (!goingBack) {
-
+                }
+                //Ich bin aktuell in keiner Sackgasse gewesen
+                else if (!goingBack) {
                     int delta = zurueckZurLetztenEcke();
                     maxSteps += delta;
                     Points ecke = ecken.get(ecken.size() - 1);
@@ -384,31 +435,10 @@ public class CheckpointManager {
                         Log("Reached last ecke");
                     }
                     aktuellerPfad.remove(aktuellerPfad.size() - 1);
-                    //System.out.println("Currently on way back");
-
                 }
             }
 
             Log("Current x y" + aktuelleX + " " + aktuelleY + " laenge " + laenge + " r " + richtung);
-            //Counter mit drei Mal laenge=0 -> Sackgasse
-
-
-/*
-            //???
-
-            if(goingBack && listContains((ArrayList<Points>) kreuzungen, new Points(aktuelleX, aktuelleY, richtung))) {
-                System.out.println("Reset Kreuzung");
-                if (deadend != "") {
-                    richtung = aendereRichtung(deadend, false);
-                    deadend = "";
-                } else {
-                    richtung = aendereRichtung(richtung, false);
-                    goingBack = false;
-                }
-            }
-
- */
-
 
             //Ecke ist erreicht, pruefe naechste Richtung
             if (laenge == 1) {
@@ -440,32 +470,6 @@ public class CheckpointManager {
                     }
                 }
             } else {
-
-                //Auf Kreuzung pruefen
-                /*
-                String richtung1 = aendereRichtung(richtung, false);
-                int laenge1 = pruefeRichtung(richtung1, aktuelleX, aktuelleY);
-                int laenge2 = pruefeRichtung(aendereRichtung(richtung1, true), aktuelleX, aktuelleY);
-
-                if(laenge1 >= 3 && laenge2 >= 3 && laenge >= 3) {
-                    Points kreuzung = new Points(aktuelleX, aktuelleY, richtung);
-                    if(kreuzungen.isEmpty()) {
-                        kreuzungen.add(kreuzung);
-                        ecken.add(kreuzung);
-                    }
-                    else if(!kreuzung.isInArea(kreuzungen, 1)) {
-                        if(!listContains(ecken, kreuzung)) {
-                            ecken.add(kreuzung);
-                        }
-                        kreuzungen.add(kreuzung);
-                        System.out.println("Neue Kreuzung " + aktuelleX + " " + aktuelleY + " " + richtung);
-                    }
-                    else {
-                        System.out.println("Punkt ist bereits bekannt");
-                    }
-                }
-                 */
-
                 //Strasse geht noch weiter -> gehe erstmal zu Ende
                 //Punkt zu Pfad hinzufuegen
                 aktuellerPfad.add(new Points(aktuelleX, aktuelleY, richtung));
@@ -479,7 +483,6 @@ public class CheckpointManager {
                     maxSteps--;
                 }
             }
-
 
             //Ringschluss gefunden
             if (optionen.mapTileNum[aktuelleX][aktuelleY] == 45) {
@@ -541,6 +544,9 @@ public class CheckpointManager {
 
         Map<Integer, List<TileKoordinate>> checkPoints = new HashMap<>();
         for (int i = steps; i <= aktuellerPfad.size(); i += steps) {
+            if(i >= aktuellerPfad.size()) {
+                i = aktuellerPfad.size() - 1;
+            }
             Points check = aktuellerPfad.get(i);
             Points nachbar = zufaelligerNachbar(check);
 
@@ -644,6 +650,8 @@ public class CheckpointManager {
         checkpunkte.put(checkpunkte.size() + 1, neu);
     }
 
+
+
     /**
      * Gibt den naechsten Checkpunkt zurueck.
      * Falls noch nicht das komplette Spielfeld betrachtet wurde, wird der naechste Checkpunkt ermittelt.
@@ -660,8 +668,17 @@ public class CheckpointManager {
             return checkpunkte.get((aktuelleID % checkpunktMaximum) + 1);
         }
 
+        //Zeitmessung starten
+        manager.zeitMessungStart();;
+
         //Naechsten Abschnitt ermitteln
         rechneWeiter(maxSteps);
+
+        //Zeitmessung enden
+        manager.zeitMessungEnde();
+
+        Log("Zeitmessung Iteration: " + manager.zeitMessungDurchschnitt());
+
         aktuellerPfad.remove(aktuellerPfad.size() - 1);
         return checkpunkte.get(aktuelleID + 1);
     }

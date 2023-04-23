@@ -20,6 +20,19 @@ public class CaretakerTest {
     }
 
     @Test
+    public void test_saveMemento_UeberschuessigeMementos() {
+        Memento memento = new Memento(data, checkpunkte, startpunkte);
+        Caretaker caretaker = new Caretaker();
+        caretaker.saveMemento(memento);
+        caretaker.saveMemento(memento);
+        caretaker.saveMemento(memento);
+        caretaker.setMementoID(1);
+        caretaker.saveMemento(memento);
+
+        assertEquals(2, caretaker.getZustaende().size());
+    }
+
+    @Test
     public void test_getLastMemento_MementoValue() {
         Memento memento = new Memento(data, checkpunkte, startpunkte);
         Caretaker caretaker = new Caretaker();

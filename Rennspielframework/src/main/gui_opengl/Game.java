@@ -7,12 +7,18 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * unterschiedliche Spielstadien
+ */
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
     GAME_WIN
 };
 
+/**
+ * Klasse die OpenGL Spielfenster Verwaltet
+ */
 public class Game {
     GameState State;
     public boolean Keys [];
@@ -23,7 +29,11 @@ public class Game {
     GameObject player;
     SpielobjekteManager manager;
 
-    //constructor
+    /**
+     * Konstruktor
+     * @param width Spielfeldbreite
+     * @param height Spielfeldhoehe
+     */
     public Game(int width, int height){
         this.State = GameState.GAME_ACTIVE;
         this.Keys = new boolean[1024];
@@ -32,6 +42,9 @@ public class Game {
         optionen = Spieloptionen.getInstance();
     }
 
+    /**
+     * Spielfeldinitialisierungsfunktion
+     */
     void Init(){
         ResourceManager resManager = ResourceManager.getIntstance();
         ResourceManager.loadShader("Res/shaders/vertexfragmentShader.glsl", "sprite");
@@ -62,7 +75,11 @@ public class Game {
         player = new GameObject(new Vector2f(this.width/2.0f - 48/2, this.height/2.0f - 48/2), new Vector2f(48, 48), ResourceManager.getTexture("BlauAutodown"), new Vector3f(1.0f, 1.0f, 1.0f), new Vector2f(0.0f, 0.0f));
         manager = new SpielobjekteManager();
     }
-    //Game loop
+
+    /**
+     * Funktion die Spielereingaben verwaltet
+     * @param dt
+     */
     void ProcessInput(float dt){
        /* if(Keys[GLFW_KEY_A]){
             if(player.Position.x >= 0.0f)
@@ -85,13 +102,17 @@ public class Game {
     void Update(float dt){
 
     }
+
+    /**
+     * Die Zeichenfunktion, dort wird die Reihenfolge festgelegt in der die Spielobjektet gezeichnet werden
+     */
     void Render (){
         //Draw Background
         Renderer.DrawSprite(ResourceManager.getTexture("20"), new Vector2f(0.0f, 0.0f), new Vector2f(this.width, this.height), new Vector3f(0.0f, 1.0f, 0.0f));
         //draw level
         level.Draw(Renderer);
         //draw player
-        player.Draw(Renderer);
+        //player.Draw(Renderer);
 
         //draw gameObjects
         manager.Draw(Renderer);

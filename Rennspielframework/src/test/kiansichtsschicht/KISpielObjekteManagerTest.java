@@ -69,7 +69,7 @@ public class KISpielObjekteManagerTest {
         KISpielObjekteManager manager = new KISpielObjekteManager();
         String richtung = "right";
 
-        Object eventData[] = new Object[] { 2, richtung, 1000, 2000};
+        Object eventData[] = new Object[] { 0, richtung, 1000, 2000};
         manager.updateEvent("update_koordinate", eventData);
 
         assertEquals(richtung, manager.getDirection());
@@ -80,7 +80,7 @@ public class KISpielObjekteManagerTest {
         KISpielObjekteManager manager = new KISpielObjekteManager();
         int posX = 1000;
 
-        Object eventData[] = new Object[] { 2, "right", posX, 2000};
+        Object eventData[] = new Object[] { 0, "right", posX, 2000};
         manager.updateEvent("update_koordinate", eventData);
 
         assertEquals(posX, manager.getPosX());
@@ -91,7 +91,7 @@ public class KISpielObjekteManagerTest {
         KISpielObjekteManager manager = new KISpielObjekteManager();
         int posY = 2000;
 
-        Object eventData[] = new Object[] { 2, "right", 1000, posY};
+        Object eventData[] = new Object[] { 0, "right", 1000, posY};
         manager.updateEvent("update_koordinate", eventData);
 
         assertEquals(posY, manager.getPosY());

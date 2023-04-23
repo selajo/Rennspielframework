@@ -7,6 +7,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Klasse die OpenGL Ressourcen laed und verwaltet
+ */
 public class ResourceManager {
 
     public static ResourceManager instance = null;
@@ -15,22 +18,46 @@ public class ResourceManager {
     private static Map<String, Texture> textures = new HashMap<>();
     private static Map<Integer, Map <Integer, Texture>> carTextures = new HashMap<>();
 
+    /**
+     * Laden es definierten Shaders
+     * @param resourceName
+     * @param name
+     * @return
+     */
     public static Shader loadShader(String resourceName, String name){
         Shader neuShader = loadShaderFromFile(resourceName);
         shaders.put(name, neuShader);
         return neuShader;
     }
 
+    /**
+     * Erhalte den geladenen Shader
+     * @param name
+     * @return
+     */
     public static Shader getShader(String name){
         return shaders.get(name);
     }
 
+    /**
+     * Lade eine Textur
+     * @param resourceName
+     * @param alpha
+     * @param name
+     * @return
+     */
     public static Texture loadTexture(String resourceName, boolean alpha, String name){
         Texture neuTexture = loadTextureFromFile(resourceName, alpha);
         textures.put(name, neuTexture);
         return neuTexture;
     }
 
+    /**
+     * Lade eine Textur die bereits ein Buffered Image ist
+     * @param image
+     * @param name
+     * @return
+     */
     public static Texture loadTextureBufferedImage(BufferedImage image, String name){
         Texture neuTexture = new Texture();
         neuTexture.setBufferedImage(image);
@@ -38,6 +65,13 @@ public class ResourceManager {
         return  neuTexture;
     }
 
+    /**
+     * Lade eine Textur, die ein Fahrzeug repräsentiert
+     * @param image
+     * @param autotyp
+     * @param direction
+     * @return
+     */
     public static Texture loadCarTextureBufferedImage(BufferedImage image, Integer autotyp, Integer direction){
         Texture neuTexture =  new Texture();
         neuTexture.setBufferedImage(image);
@@ -54,10 +88,21 @@ public class ResourceManager {
     }
 
 
+    /**
+     * Liefert eine Textur
+     * @param name
+     * @return
+     */
     public static Texture getTexture(String name){
         return textures.get(name);
     }
 
+    /**
+     * Rueckgabe einer Fahrzeugtextur
+     * @param autotyp
+     * @param direction
+     * @return
+     */
     public static Texture getCarTexture(String autotyp, String direction){
         Texture tex = carTextures.get(Integer.parseInt(autotyp)).get(Integer.parseInt(direction));
         return tex; //carTextures.get(autotyp).get(direction);
@@ -65,12 +110,23 @@ public class ResourceManager {
 
     private ResourceManager(){};
 
+    /**
+     * Lade Shader von einer Datei
+     * @param rescourceName
+     * @return
+     */
     private static Shader loadShaderFromFile(String rescourceName){
         Shader shader = new Shader(rescourceName);
         shader.compile();
         return shader;
     }
 
+    /**
+     * Lade Textur von einer Datei
+     * @param resourceName
+     * @param alpha
+     * @return
+     */
     private static Texture loadTextureFromFile(String resourceName, boolean alpha){
         Texture texture;
         if(alpha){
@@ -82,6 +138,10 @@ public class ResourceManager {
         return texture;
     }
 
+    /**
+     * Erhalten den Singelton ResourceManager
+     * @return
+     */
     public static ResourceManager getIntstance(){
         if(instance == null) {
         instance = new ResourceManager();
@@ -89,6 +149,9 @@ public class ResourceManager {
         return instance;
     }
 
+    /**
+     * Lade alle Tiles von den Spieloptionen
+     */
     public static void loadAllMapTiles() {
         Spieloptionen optionen = Spieloptionen.getInstance();
 
@@ -98,6 +161,9 @@ public class ResourceManager {
         }
     }
 
+    /**
+     * Lade allte Fahrzeugtiles von den Spieloptionen
+     */
     public static void loadAllCarTiles(){
         Spieloptionen optionen = Spieloptionen.getInstance();
 

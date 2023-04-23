@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import kiansichtsschicht.AKI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,26 +44,29 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
     /**
      * Festlegen der Bildschirmgroe�e auf 30 Spalten
      */
-    public final int maxBildschirmSpalten = 30;
+    public int maxBildschirmSpalten = 30;
     /**
      * Festlegen der Bildschirmgroe�e auf 20 Zeilen
      */
-    public final int maxBildschirmZeilen = 20;
+    public int maxBildschirmZeilen = 20;
     /**
      * Berechnete Bildschirmhoehe
      */
-    public final int bildschirmHoehe = tileGroesse * maxBildschirmZeilen;
+    public  int bildschirmHoehe = tileGroesse * maxBildschirmZeilen;
     /**
      * Berechnete Bildschirmbreite
      */
-    public final int bildschirmBreite = tileGroesse * maxBildschirmSpalten;
+    public  int bildschirmBreite = tileGroesse * maxBildschirmSpalten;
 
     /**
      * Zeigt an ob das Grafikframework mit OpenGl inizialiert werden soll
      */
-    public boolean isOpenGL = false;
+    public boolean isOpenGL = true;
 
-
+    /**
+     * Gibt an ob der Server Headless gestartet werden soll
+     */
+    public boolean isHeadless = false;
     //Netzwerkeinstellungen
     /**
      * Netzwerkport
@@ -174,6 +181,11 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
     public Map<Integer, Object[]> tileInformationen = null;
 
     /**
+     * Für den menschlichen Spielclient müssen die eingegangen add_view_car_Events abgefangen werden.
+     */
+    public Map<Integer, Object[]> addClientsInformation = null;
+
+    /**
      * ID des Spielers, die vom Server gesetzt wird
      */
     public int spielerID = 0;
@@ -203,6 +215,18 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
             String line = " ";
             line = br.readLine();
             System.out.println(line);
+
+            //Einlesen der Spaltenanzahl und Zeilenanzahl
+            line = br.readLine();
+            String numb[] = line.split(" ");
+            Object obj[] = new Object[numb.length];
+            for (int i = 0; i < 2; i++) {
+                obj[i] = Integer.parseInt(numb[i]);
+            }
+            maxBildschirmSpalten = (int) obj[0];
+            maxBildschirmZeilen = (int) obj[1];
+            bildschirmHoehe = maxBildschirmZeilen * tileGroesse;
+            bildschirmBreite = maxBildschirmSpalten * tileGroesse;
 
             mapTileNum = new int[maxBildschirmSpalten][maxBildschirmZeilen];
 
@@ -521,8 +545,6 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
      * @param impdef Config-File-Pfad
      */
     public void setSpieloptionen(String impdef) {
-
-
         JSONParser jsonParser = new JSONParser();
         try {
             //Parsing the contents of the JSON file
@@ -564,7 +586,7 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
 
             String spielfeld = (String) jsonObject.get("spielfeld");
             if(!filePath.equals(new File("").getAbsolutePath())) {
-                this.spielfeld = filePath + "\\" + spielfeld;
+                this.spielfeld = filePath + "/" + spielfeld;
             }
             else {
                 this.spielfeld = spielfeld;
@@ -630,26 +652,25 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
         }
 
 
-    public void setClientSpieloptionen(String[] agrs) {
+    public void setClientSpieloptionen() {
 
         client = true; //wird als Client Initialisiert
 
-        if (agrs[1] != null) {
-
-            this.port = Integer.parseInt(agrs[1].toString());
+        if (CLI.getPort() != null) {
+            this.port = CLI.getPort();
         } else {
-            System.out.println("Es wird der default Port:" + port + " verwendet");
+            System.out.println("Es wird der default Port: " + port + " verwendet");
         }
 
-        if (agrs[2] != null) {
-
-            this.hostname = agrs[2].toString();
+        if (CLI.getIP() != null) {
+            this.hostname = CLI.getIP();
         } else {
             System.out.println("Es wird der default hostname:" + hostname + " verwendet");
         }
 
     }
 
+    static final Logger logger = LogManager.getLogger();
 
     public int werteErgebnisseAus(Object[] finaleSpieldaten, boolean print) {
         //Spielmodus 1: es ist nur beste Zeit/Runde wichtig
@@ -666,9 +687,9 @@ public class Spieloptionen { //Spieloptionen, die aus einer XML Datei geholt wer
                 break;
 
             if(print) {
-                System.out.println("   Spieler " + finaleSpieldaten[j]);
-                System.out.println("     Runden: " + finaleSpieldaten[j + 1]);
-                System.out.println("     Beste Zeit/Runde: " + finaleSpieldaten[j + 2]);
+                logger.info("   Spieler " + finaleSpieldaten[j] +
+                        "\n     Runden: " + finaleSpieldaten[j + 1] +
+                        "\n     Beste Zeit/Runde: " + finaleSpieldaten[j + 2]);
             }
             else {
                 //Spielmodus 1: Beste Rundenzeit

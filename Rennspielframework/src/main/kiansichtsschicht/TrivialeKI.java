@@ -22,11 +22,6 @@ public class TrivialeKI extends AKI {
     public String saveDirection;
 
     /**
-     * Variable, die den Tastaturdruck "simuliert"
-     */
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-
-    /**
      * Flag, das beschreibt, ob Client gerade zuück auf die Strasse fährt
      */
     public boolean zurueckAufStrasse;
@@ -36,17 +31,36 @@ public class TrivialeKI extends AKI {
      */
     private boolean verbose;
 
+    /**
+     * Berechnet den naechsten Checkpunkt
+     */
     private CheckpointManager checkpointManager;
 
-    private int checkId;
+    /**
+     * Aktuelle ID des Checkpunktes
+     */
+    private int checkpunktId;
 
+    /**
+     * Checkpunkt inkl. Nachbarknoten
+     */
     private List<TileKoordinate> checkpoint;
 
+    /**
+     * Maximaler Sichtradius
+     */
     private int maxSteps = 12;
 
     List<TileKoordinate> oldSaves = new ArrayList<>();
+
+    /**
+     * Anzahl an Tiles, nach denen angenommen wird, dass der Client in die falsche Richtung faehrt
+     */
     int distanzZuCheckpunkt;
-    int initDistanz = maxSteps+4;
+    /**
+     * Initialidistanz des Clients
+     */
+    int initDistanz = maxSteps + 4;
 
     /**
      * Erzeugt TrivialeKI
@@ -59,7 +73,7 @@ public class TrivialeKI extends AKI {
         saveDirection = "";
         verbose = true;
         checkpointManager = new CheckpointManager(manager);
-        checkId = 0;
+        checkpunktId = 0;
         List<TileKoordinate> checkpoint = null;
         distanzZuCheckpunkt = initDistanz;
     }
@@ -80,16 +94,9 @@ public class TrivialeKI extends AKI {
      */
     private void Log(String string) {
         if (verbose) {
-            System.out.println(string);
+            logger.info("---Triviale KI: " + string);
         }
 
-    }
-
-    /**
-     * Setzt alle gepresssten Richtungen zurück
-     */
-    public void resetPressed() {
-        upPressed = downPressed = leftPressed = rightPressed = false;
     }
 
     /**
@@ -111,52 +118,13 @@ public class TrivialeKI extends AKI {
         }
     }
 
-    /**
-     * "Presst" die gewünschte Richtung.
-     * Es sind nur left, right, up und down erlaubt
-     *
-     * @param richtung Die zu "pressende" Richtung
-     */
-    public void pressRichtung(String richtung) {
-        resetPressed();
-        if (richtung == "left")
-            leftPressed = true;
-        else if (richtung == "right")
-            rightPressed = true;
-        else if (richtung == "up")
-            upPressed = true;
-        else if (richtung == "down")
-            downPressed = true;
-    }
-
-    /**
-     * Ueberprueft, ob eine Tile akzeptiert wird.
-     * Hierbei werden Asphalt, Start und Ziel akzeptiert
-     *
-     * @param posX X-Koordinate der Spielers
-     * @param posY Y-Koordeinate des Spielers
-     * @return true: akzeptiert, false: sonst
-     */
-    public boolean checkStrasse(double posX, double posY) {
-        boolean erlaubt = false;
-        switch (manager.getTileTypVonPosition(posX, posY)) {
-            case 45:
-            case 11:
-            case 9:
-                erlaubt = true;
-                break;
-            default:
-                erlaubt = false;
-                break;
-        }
-        return erlaubt;
-    }
 
     /**
      * Berechnet die Laenge der Strecke nach Richtung.
+     *
      * @param richtung Zu pruefende Richtung.
-     * @param posX Zu pruefende X-Position.
-     * @param posY Zu pruefende Y-Position.
+     * @param posX     Zu pruefende X-Position.
+     * @param posY     Zu pruefende Y-Position.
      * @return Anzahl halbe Tiles, die Laenge des Wegs beschreiben
      */
     public int pruefeLaengsterWeg(String richtung, double posX, double posY) {
@@ -211,6 +179,7 @@ public class TrivialeKI extends AKI {
 
     /**
      * Prueft, ob die aktuellen Koordinaten in dem Bereich (Umkreisgroesse 1) eines Checkpunktes sind.
+     *
      * @return True: aktuellen Koordinaten sind im Bereich, False: andernfalls
      */
     boolean isCheckpoint() {
@@ -227,14 +196,14 @@ public class TrivialeKI extends AKI {
     void pruefeCheckpunkt() {
         //Es gibt noch keinen naechsten Checkpunkt
         if (checkpoint == null) {
-            checkpoint = checkpointManager.nextCheckpunkt(checkId, maxSteps);
-            System.out.println("Neuer Checkpunkt: " + checkpoint.get(0));
+            checkpoint = checkpointManager.nextCheckpunkt(checkpunktId, maxSteps);
+            Log("Neuer Checkpunkt: " + checkpoint.get(0));
         }
         //Der aktuelle Checkpunkt ist erreicht und es wird der naechste benoetigt
         else if (isCheckpoint()) {
-            checkId += 1;
-            checkpoint = checkpointManager.nextCheckpunkt(checkId, maxSteps);
-            System.out.println("Neuer Checkpunkt: " + checkpoint.get(0));
+            checkpunktId += 1;
+            checkpoint = checkpointManager.nextCheckpunkt(checkpunktId, maxSteps);
+            Log("Neuer Checkpunkt: " + checkpoint.get(0));
             distanzZuCheckpunkt = initDistanz;
         }
     }
@@ -242,6 +211,7 @@ public class TrivialeKI extends AKI {
     /**
      * Prueft, in welcher Richtung, in Kombination zur aktuellen Richtung, der naechste Checkpunkt liegt und
      * gibt die dementsprechende Richtung zurueck.
+     *
      * @return Richtung, in die der naechste Checkpunkt liegt.
      */
     String orientierenAnCheckpunkt() {
@@ -261,25 +231,9 @@ public class TrivialeKI extends AKI {
         }
     }
 
-    /**
-     * Prueft, ob List die TileKoordinate p enthaelt.
-     *
-     * @param list Zu pruefende Liste.
-     * @param p    Zu pruefende TileKoordinate.
-     * @return True: Liste enthaelt TileKoordinate, False: andernfalls.
-     */
-    boolean listContains(ArrayList<TileKoordinate> list, TileKoordinate p) {
-        for (TileKoordinate i : list) {
-            if (i.getTileX() == p.getTileX() && i.getTileY() == p.getTileY()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Ermittelt eine 180° Drehung zur angegebenen Richtung.
-     *
      * @param richtung Zu drehende Richtung.
      * @return Gegenrichtung zur angegebenen Richtung.
      */
@@ -306,7 +260,7 @@ public class TrivialeKI extends AKI {
         }
 
         //Ziel ist erreicht
-        if(manager.getTileTypVonPosition(manager.getPosX(), manager.getPosY()) == 45) {
+        if (manager.getTileTypVonPosition(manager.getPosX(), manager.getPosY()) == 45) {
             oldSaves = new ArrayList<>();
         }
 
@@ -329,11 +283,11 @@ public class TrivialeKI extends AKI {
         int counter = pruefeLaengsterWeg(manager.direction, manager.posX, manager.posY);
 
         //Distanz zum Checkpunkt ist nicht eingehalten worden -> falsche Richtung
-        if(distanzZuCheckpunkt <= 0) {
-                Log("ich fahre in die falsche Richtung!");
-                richtung = gegenRichtung(manager.direction);
-                pressRichtung(richtung);
-                distanzZuCheckpunkt = 2*initDistanz+2;
+        if (distanzZuCheckpunkt <= 0) {
+            Log("ich fahre in die falsche Richtung!");
+            richtung = gegenRichtung(manager.direction);
+            pressRichtung(richtung);
+            distanzZuCheckpunkt = 2 * initDistanz + 2;
         }
         //Solange auf normaler Straße gefahren wird, nichts an Richtung ändern
         else if (counter > manager.optionen.vergroesserung + 1) {
@@ -350,12 +304,6 @@ public class TrivialeKI extends AKI {
         }
     }
 
-    /**
-     * Schickt die berechnete Richtung als Event
-     */
-    public void schickeRichtung() {
-        manager.event.notify("key_event", 2, upPressed, downPressed, leftPressed, rightPressed);
-    }
 
     /**
      * Ermittelt Richtung und schicht diese als Event

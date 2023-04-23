@@ -3,11 +3,15 @@ package com.mapeditor.model;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.mapeditor.controller.TileController;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,7 +19,8 @@ import org.json.simple.parser.JSONParser;
 import javax.imageio.ImageIO;
 
 /**
- * Ist fuer das Einlesen der Tiles zustaendig.
+ * Ist fuer das Einlesen der Tiles & Konfigurationsdatei sowie Speichern
+ * der neuen Konfigurationsdatei zustaendig.
  */
 public class TileReader {
 
@@ -63,7 +68,19 @@ public class TileReader {
 
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader(jsonFile));
+            JSONObject jsonObject;
+            try {
+                String path = "/" + Paths.get(jsonFile).getFileName().toString();
+                InputStream is = getClass().getResourceAsStream(path);
+                String result = new BufferedReader(new InputStreamReader(is))
+                        .lines().collect(Collectors.joining("\n"));
+
+                jsonObject = (JSONObject) jsonParser.parse(result);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+                jsonObject = (JSONObject) jsonParser.parse(new FileReader(jsonFile));
+            }
             configFile = jsonObject;
             JSONArray jarray = (JSONArray) jsonObject.get("KartenTile");
 
@@ -190,23 +207,35 @@ public class TileReader {
      */
     public int[][] ladeMap(String file) {
         tileController = TileController.getInstance();
-        int[][] mapTileNum = new int[maxBildschirmZeilen][maxBildschirmSpalten];
+        int[][] mapTileNum = new int[tileController.maxBildschirmZeilen][tileController.maxBildschirmSpalten];
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
 
             String line = " ";
             line = br.readLine();
+
+            //Einlesen der Spaltenanzahl und Zeilenanzahl
+            line = br.readLine();
             System.out.println(line);
+            String numb[] = line.split(" ");
+            Object obj[] = new Object[numb.length];
+            for (int i = 0; i < 2; i++) {
+                obj[i] = Integer.parseInt(numb[i]);
+            }
+            tileController.maxBildschirmSpalten = (int) obj[0];
+            tileController.maxBildschirmZeilen = (int) obj[1];
+
+            mapTileNum = new int[tileController.maxBildschirmZeilen][tileController.maxBildschirmSpalten];
 
             int row = 0;
             int num;
 
             //Iteriere ueber Dateiinhalt
-            while (row < maxBildschirmZeilen) {
+            while (row < tileController.maxBildschirmZeilen) {
                 line = br.readLine();
                 String numbers[] = line.split(" ");
 
-                for(int col = 0; col < maxBildschirmSpalten; col++) {
+                for(int col = 0; col < tileController.maxBildschirmSpalten; col++) {
                     num = Integer.parseInt(numbers[col]);
                     mapTileNum[row][col] = num;
                 }

@@ -90,6 +90,8 @@ public class KollisionChecker {
 					phyAk1.kraefte.get("upKraft").y = 0;
 					event.notify("add_collision_force", akteur1.GetId(),(double) 0 , (double) kraft + 20000 );
 					event.notify("add_collision_force", akteur2.GetId(),(double) 0 , (double) -kraft - 20000 );
+					dataAk1.anzahlSpielerKollisionen++;
+					dataAk2.anzahlSpielerKollisionen++;
 				}
 				break;
 			case "down":
@@ -101,6 +103,8 @@ public class KollisionChecker {
 					phyAk1.kraefte.get("downKraft").y = 0;
 					event.notify("add_collision_force", akteur1.GetId(),(double) 0 , (double) - kraft - 10000);
 					event.notify("add_collision_force", akteur2.GetId(),(double) 0 , (double)  kraft + 10000 );
+					 dataAk1.anzahlSpielerKollisionen++;
+					 dataAk2.anzahlSpielerKollisionen++;
 				}
 				break;
 			case "left":
@@ -112,6 +116,8 @@ public class KollisionChecker {
 					phyAk1.kraefte.get("leftKraft").x = 0;
 					event.notify("add_collision_force", akteur1.GetId(), (double) kraft + 20000, (double) 0  );
 					event.notify("add_collision_force", akteur2.GetId(), (double) - kraft - 20000, (double) 0  );
+					dataAk1.anzahlSpielerKollisionen++;
+					dataAk2.anzahlSpielerKollisionen++;
 				}
 				break;
 			case "right":
@@ -123,6 +129,8 @@ public class KollisionChecker {
 					phyAk1.kraefte.get("rightKraft").x = 0;
 					event.notify("add_collision_force", akteur1.GetId(), (double) - kraft - 10000 ,(double) 0 );
 					event.notify("add_collision_force", akteur2.GetId(), (double) kraft + 10000 ,(double) 0 );
+					dataAk1.anzahlSpielerKollisionen++;
+					dataAk2.anzahlSpielerKollisionen++;
 				}
 				break;
 				
@@ -165,6 +173,8 @@ public class KollisionChecker {
 				phy.kraefte.get("upKraft").y = 0;
 				phy.kraefte.get("downKraft").y += (kraft * -1)/optionen.abprallen + 10000;
 				phy.collision = true;
+				data.anzahlWandKollisionen++;
+
 			}
 			//CheckpointCheck up
 			if(tileNummer1.Checkpoint != 0 || tileNummer2.Checkpoint != 0) {
@@ -204,6 +214,7 @@ public class KollisionChecker {
 				phy.kraefte.get("downKraft").y = 0;
 				phy.kraefte.get("upKraft").y -= kraft/optionen.abprallen + 10000;
 				phy.collision = true;
+				data.anzahlWandKollisionen++;
 			}
 			//CheckpointCheck down
 			if(tileNummer1.Checkpoint != 0 || tileNummer2.Checkpoint != 0) {
@@ -242,6 +253,7 @@ public class KollisionChecker {
 				phy.kraefte.get("leftKraft").x = 0;
 				phy.kraefte.get("rightKraft").x += (-1*kraft)/optionen.abprallen + 10000;
 				phy.collision = true;
+				data.anzahlWandKollisionen++;
 			}
 			//CheckpointCheck left
 			if(tileNummer1.Checkpoint != 0 || tileNummer2.Checkpoint != 0) {
@@ -280,6 +292,7 @@ public class KollisionChecker {
 				phy.kraefte.get("rightKraft").x = 0;
 				phy.kraefte.get("leftKraft").x -= kraft/optionen.abprallen + 10000;
 				phy.collision = true;
+				data.anzahlWandKollisionen++;
 			}
 			//CheckpointCheck right
 			if(tileNummer1.Checkpoint != 0 || tileNummer2.Checkpoint != 0) {

@@ -1,6 +1,6 @@
 package com.mapeditor.controller;
 
-import com.mapeditor.app.TileTableModel;
+import com.mapeditor.view.TileTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,8 +44,8 @@ public class TableConverter {
         ziel = false;
         TileTableModel model = (TileTableModel) tabelle.getModel();
 
-        for (int row = 0; row < 20; row++) {
-            for (int col = 0; col < 30; col++) {
+        for (int row = 0; row < tileController.maxBildschirmZeilen; row++) {
+            for (int col = 0; col < tileController.maxBildschirmSpalten; col++) {
                 Object[] value = model.getCompleteValueAt(row, col);
                 int tile = (int) value[0];
 
@@ -115,10 +115,10 @@ public class TableConverter {
     public static void fuelleRestMit(TileTableModel model, int id) {
         ImageIcon icon = convertTilesToIcon(id);
         Object[] fuelle = new Object[]{id, icon};
-        Object[][] data = new Object[20][30];
+        Object[][] data = new Object[tileController.maxBildschirmZeilen][tileController.maxBildschirmSpalten];
 
-        for (int row = 0; row < 20; row++) {
-            for (int col = 0; col < 30; col++) {
+        for (int row = 0; row < tileController.maxBildschirmZeilen; row++) {
+            for (int col = 0; col < tileController.maxBildschirmSpalten; col++) {
                 data[row][col] = model.getCompleteValueAt(row, col);
                 if ((int)((Object[])data[row][col])[0] == tileController.defaultTile) {
                     model.setValueAt(fuelle, row, col);
@@ -134,8 +134,9 @@ public class TableConverter {
      * @param map Zu verwendendes Spielfeld
      */
     public static void fuelleTabelleKomplett(TileTableModel model, int[][] map) {
-        for (int row = 0; row < 20; row++) {
-            for (int col = 0; col < 30; col++) {
+        System.out.println(tileController.maxBildschirmSpalten + " Höhe: "+ tileController.maxBildschirmZeilen);
+        for (int row = 0; row < tileController.maxBildschirmZeilen; row++) {
+            for (int col = 0; col < tileController.maxBildschirmSpalten; col++) {
                 Object[] fuelle = new Object[2];
                 fuelle[0] = map[row][col];
                 fuelle[1] = convertTilesToIcon(map[row][col]);

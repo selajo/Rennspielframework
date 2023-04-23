@@ -1,11 +1,14 @@
 package gui_opengl;
 
 
+import anwendungsschicht.EventManager;
 import anwendungsschicht.Spieloptionen;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+
+import java.util.Map;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -13,8 +16,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+/**
+ * Klass die das Spielfenster für OpenGL erstellt und verwaltet
+ */
 public class Window {
 
+    private boolean init = false;
     private boolean created = false;
     private int width, height;
     private String title;
@@ -23,6 +30,7 @@ public class Window {
     public MenschlicheAnsichtOpenGL ansicht;
     public Spieloptionen optionen;
     public KeyListener listener;
+    EventManager event;
 
     private static Window window = null;
 
@@ -32,12 +40,17 @@ public class Window {
 
     private Window() {
         optionen = Spieloptionen.getInstance();
+        event = EventManager.getInstance();
 
-        this.width = optionen.bildschirmBreite;
-        this.height = optionen.bildschirmHoehe;
+        this.width = optionen.tileGroesse * optionen.maxBildschirmSpalten;
+        this.height = optionen.tileGroesse * optionen.maxBildschirmZeilen;
         this.title = "2D Race Game";
     }
 
+    /**
+     * Singelton für ein Spielfenster
+     * @return
+     */
     public static Window get() {
         if (Window.window == null) {
             Window.window = new Window();
@@ -46,6 +59,9 @@ public class Window {
         return Window.window;
     }
 
+   /* *//**
+     * Ausführungshistorie für ein Speilfenster
+     *//*
     public void run() {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
@@ -60,8 +76,11 @@ public class Window {
         glfwTerminate();
         glfwSetErrorCallback(null).free();
 
-    }
+    }*/
 
+    /**
+     * Initialisierung eines Spielfenster, Festlegung der Keylistener
+     */
     public void init() {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
@@ -121,6 +140,9 @@ public class Window {
         created = true;
     }
 
+   /* *//**
+     * Zeichenschleife für OpenGL
+     *//*
     public void loop() {
 
         float deltaTime = 0.0f;
@@ -149,8 +171,11 @@ public class Window {
             testGame.Render();
 
             //TestKeyListener
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE))
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
                 System.out.println("Space is pressed");
+                glfwDestroyWindow(glfwWindow);
+            }
+
 
             listener.checkInput();
 
@@ -164,20 +189,23 @@ public class Window {
         }
 
         glfwTerminate();
-    }
+    }*/
 
+    /**
+     * Die Aktualisierungsschleife des Spielfensters
+     * @param deltaTime
+     */
     public void update(float deltaTime){
 
         if(created == false){
             init();
-        }
+            }
 
         //float deltaTime = 0.0f;
         //float lastFrame = 0.0f;
 
         //RenderLoop
         if (!glfwWindowShouldClose(glfwWindow)) {
-
             //KeyInput
             processInput(glfwWindow);
 
@@ -198,8 +226,10 @@ public class Window {
             testGame.Render();
 
             //TestKeyListener
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE))
-                System.out.println("Space is pressed");
+            if (KeyListener.isKeyPressed(GLFW_KEY_ESCAPE)){
+                System.out.println("Escape is pressed");
+                glfwDestroyWindow(glfwWindow);
+            }
 
             listener.checkInput();
 
@@ -211,11 +241,18 @@ public class Window {
             //DoubleBuffering
             glfwSwapBuffers(glfwWindow);
         }
+        else{
+            glfwDestroyWindow(glfwWindow);
+            System.exit(0);
+        }
 
 
     }
 
-
+    /**
+     * Funktion die Spieleingaben verwaltet, wie Tastartureingaben
+     * @param window
+     */
     public void processInput(long window) {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);

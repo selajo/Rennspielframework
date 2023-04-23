@@ -71,8 +71,8 @@ public abstract class SpielApplikation {
 	/**
 	 * Schaffe eine neue KI Ansicht
 	 */
-	public KIAnsicht getKIAnsicht(String [] agrs){
-		KIAnsicht ki_ansicht = new KIAnsicht(agrs);
+	public KIAnsicht getKIAnsicht(){
+		KIAnsicht ki_ansicht = new KIAnsicht();
 		return ki_ansicht;
 	}
 

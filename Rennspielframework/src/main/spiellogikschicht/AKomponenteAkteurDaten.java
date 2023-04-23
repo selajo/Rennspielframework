@@ -1,10 +1,10 @@
 package spiellogikschicht;
 
 import anwendungsschicht.Spieloptionen;
+import spielansichtsschicht.ISpielAnsicht;
 
 import java.awt.Rectangle;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -30,7 +30,7 @@ public abstract class AKomponenteAkteurDaten extends AkteurKomponente{
 	 * Startzeit einer Runde in Millisekunden
 	 */
 	long rundenstart = 0;//in Millisec
-	
+
 	/**
 	 * HashMap die alle Rundenzeiten eines Autos enthaelt
 	 */
@@ -39,6 +39,14 @@ public abstract class AKomponenteAkteurDaten extends AkteurKomponente{
 	 * Die anzahl der vollstaendig gefahrenen Runden
 	 */
 	public int anzahlRunden = 0;					//Welche Runde sich das Auto momentan befindet
+	/**
+	 * Kollisionen mit Waende
+	 */
+	public int anzahlWandKollisionen = 0;
+	/**
+	 * Die Anzahl der Kollisionen mit Spielern
+	 */
+	public int anzahlSpielerKollisionen = 0;
 	/**
 	 * Welchen Checkpoint das Fahrzeug schon ueberfahren hat
 	 */
@@ -66,12 +74,22 @@ public abstract class AKomponenteAkteurDaten extends AkteurKomponente{
 	public void addRundenZeit(Date date) {
 		Spieloptionen optionen = Spieloptionen.getInstance();
 		if(besteRundenZeit == 0) {
+			rundenZeiten = new HashMap<Integer, Double>();
 			besteRundenZeit = date.getTime() - rundenstart; //in Millisec
+			rundenZeiten.put(anzahlRunden,besteRundenZeit);
 			return;
+		}
+		else
+		{
+			double aktuelleRunde = date.getTime() - rundenstart;
+			rundenZeiten.put(anzahlRunden, aktuelleRunde);
 		}
 		if(date.getTime() - rundenstart < besteRundenZeit) {
 			besteRundenZeit = date.getTime() - rundenstart;
 		}
+
+		System.out.println("KollisionWand: " + anzahlWandKollisionen);
+		System.out.println("KollisionSpieler: " + anzahlSpielerKollisionen);
 
 	}
 	

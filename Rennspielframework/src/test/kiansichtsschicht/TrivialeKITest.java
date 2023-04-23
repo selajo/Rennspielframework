@@ -50,7 +50,7 @@ public class TrivialeKITest {
         TrivialeKI trivial = createTrivial();
         String richtung = "up";
 
-        Object eventData[] = new Object[] { 2, richtung, 1000, 2000};
+        Object eventData[] = new Object[] { 0, richtung, 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile(richtung);
@@ -61,7 +61,7 @@ public class TrivialeKITest {
     public void test_saveMapTile_different_Tile_X() {
         TrivialeKI trivial = createTrivial();
 
-        Object eventData[] = new Object[] { 2, "richtung", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "richtung", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile("richtung");
@@ -72,7 +72,7 @@ public class TrivialeKITest {
     public void test_saveMapTile_different_Tile_Y() {
         TrivialeKI trivial = createTrivial();
 
-        Object eventData[] = new Object[] { 2, "richtung", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "richtung", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile("richtung");
@@ -86,7 +86,7 @@ public class TrivialeKITest {
         trivial.saveMapTileY = 42;
         trivial.saveDirection = "up";
 
-        Object eventData[] = new Object[] { 2, "richtung", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "richtung", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile("richtung");
@@ -100,7 +100,7 @@ public class TrivialeKITest {
         trivial.saveMapTileY = 42;
         trivial.saveDirection = "up";
 
-        Object eventData[] = new Object[] { 2, "richtung", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "richtung", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile("richtung");
@@ -114,7 +114,7 @@ public class TrivialeKITest {
         trivial.saveMapTileY = 42;
         trivial.saveDirection = "up";
 
-        Object eventData[] = new Object[] { 2, "richtung", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "richtung", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.saveMapTile("richtung");
@@ -287,7 +287,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 30;
         trivial.saveMapTileY = 42;
         trivial.saveDirection = "up";
-        Object eventData[] = new Object[] { 2, "left", 1000, 2000};
+        Object eventData[] = new Object[] { 0, "left", 1000, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -301,7 +301,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 15;
         trivial.saveMapTileY = 42;
         trivial.saveDirection = "up";
-        Object eventData[] = new Object[] { 2, "left", 1300, 2000};
+        Object eventData[] = new Object[] { 0, "left", 1300, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -316,7 +316,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 0;
         trivial.saveMapTileY = 0;
         trivial.saveDirection = "left";
-        Object eventData[] = new Object[] { 2, "left", 1300, 2000};
+        Object eventData[] = new Object[] { 0, "left", 1300, 2000};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -330,7 +330,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 1;
         trivial.saveMapTileY = 1;
         trivial.saveDirection = "right";
-        Object eventData[] = new Object[] { 2, "left", 0, 0};
+        Object eventData[] = new Object[] { 0, "left", 0, 0};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -344,7 +344,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 1;
         trivial.saveMapTileY = 1;
         trivial.saveDirection = "right";
-        Object eventData[] = new Object[] { 2, "left", 0, 50};
+        Object eventData[] = new Object[] { 0, "left", 0, 50};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -358,7 +358,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 1;
         trivial.saveMapTileY = 1;
         trivial.saveDirection = "left";
-        Object eventData[] = new Object[] { 2, "left", 100, 50};
+        Object eventData[] = new Object[] { 0, "left", 100, 50};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -373,7 +373,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 1;
         trivial.saveMapTileY = 1;
         trivial.saveDirection = "up";
-        Object eventData[] = new Object[] { 2, "left", 50, 0};
+        Object eventData[] = new Object[] { 0, "left", 50, 0};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -387,7 +387,7 @@ public class TrivialeKITest {
         trivial.saveMapTileX = 1;
         trivial.saveMapTileY = 1;
         trivial.saveDirection = "up";
-        Object eventData[] = new Object[] { 2, "left", 50, 100};
+        Object eventData[] = new Object[] { 0, "left", 50, 100};
         trivial.manager.updateEvent("update_koordinate", eventData);
 
         trivial.vomWegAbgekommen();
@@ -403,215 +403,6 @@ public class TrivialeKITest {
         assertTrue(!trivial.upPressed && !trivial.downPressed
                     && !trivial.leftPressed && !trivial.rightPressed);
     }
-/*
-    @Test
-    public void test_ermittleRichtung_vom_Weg_abgekommen() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[][] {
-                {1, 1, 1, 1},
-                {2, 11, 11, 2},
-                {3, 11, 11, 3}
-        };
-        trivial.saveMapTileX = 27;
-        trivial.saveMapTileY = 35;
-        trivial.saveDirection = "up";
-        Object eventData[] = new Object[] { 2, "left", 0, 0};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-        assertTrue(trivial.rightPressed);
-    }
-
-    @Test
-    public void test_ermittleRichtung_zurueckAufStrasse() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[][] {
-                {11, 1, 1, 1},
-                {2, 11, 11, 2},
-                {3, 11, 11, 3}
-        };
-        trivial.saveMapTileX = 0;
-        trivial.saveMapTileY = 0;
-        trivial.saveDirection = "down";
-        Object eventData[] = new Object[] { 2, "left", 0, 0};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-        trivial.zurueckAufStrasse = true;
-
-        trivial.ermittleRichtung();
-        assertTrue(trivial.downPressed);
-    }
-
-    @Test
-    public void test_ermittleRichtung_zurueckAufStrasse_zu_frueh() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-
-        // 11  11 11 ...
-        // I/0 0  11 ...
-        // 11 11 11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[1][1] = 0;
-        trivial.manager.optionen.mapTileNum[1][0] = 0;
-        trivial.saveMapTileX = 0;
-        trivial.saveMapTileY = 0;
-        trivial.saveDirection = "down";
-        Object eventData[] = new Object[] { 2, "left", 0, 60};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-        trivial.zurueckAufStrasse = true;
-
-        trivial.ermittleRichtung();
-        assertTrue(trivial.downPressed);
-    }
-
-    @Test
-    public void test_ermittleRichtung_zurueckAufStrasse_auf_strasse() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-
-        // 11  11 11 ...
-        // I/11 0  11 ...
-        // 11 11 11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[1][1] = 0;
-        trivial.manager.optionen.mapTileNum[1][0] = 11;
-        trivial.saveMapTileX = 0;
-        trivial.saveMapTileY = 0;
-        trivial.saveDirection = "down";
-        Object eventData[] = new Object[] { 2, "left", 0, 60};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-        trivial.zurueckAufStrasse = true;
-
-        trivial.ermittleRichtung();
-        assertTrue(trivial.downPressed);
-    }
-
-
-    @Test
-    public void test_ermittleRichtung_fahre_einfach_weiter() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-        trivial.saveDirection = "right";
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-        trivial.manager.optionen.mapTileNum[10][0] = 0;
-
-        Object eventData[] = new Object[] { 2, "right", 0, 0};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-
-        assertTrue(trivial.rightPressed);
-    }
-
-
-    @Test
-    public void test_ermittleRichtung_ende_erreicht_right_mit_down() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-
-        // 0  11 11 ...
-        // I  0  11 ...
-        // 11 11 11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[0][0] = 0;
-        trivial.manager.optionen.mapTileNum[1][1] = 0;
-
-        Object eventData[] = new Object[] { 2, "right", 0, 50};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-
-        assertTrue(trivial.downPressed);
-    }
-
-
-    @Test
-    public void test_ermittleRichtung_ende_erreicht_left_mit_up() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-        // ...
-        // 11 11 11 ...
-        // 0  I  11 ...
-        // 11 0 11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[0][5] = 0;
-        trivial.manager.optionen.mapTileNum[1][6] = 0;
-
-        Object eventData[] = new Object[] { 2, "left", 50, 240};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-
-        assertTrue(trivial.upPressed);
-    }
-
-
-    @Test
-    public void test_ermittleRichtung_ende_erreicht_up_mit_right() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-        // 0  11 11 ...
-        // I  11  11 ...
-        // 11 11 11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[0][0] = 0;
-        trivial.manager.optionen.mapTileNum[10][1] = 0;
-
-        Object eventData[] = new Object[] { 2, "up", 0, 50};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-
-        assertTrue(trivial.rightPressed);
-    }
-
-
-    @Test
-    public void test_ermittleRichtung_ende_erreicht_down_mit_left() {
-        TrivialeKI trivial = createTrivial();
-        trivial.manager.optionen.mapTileNum = new int[20][30];
-
-        for(int i = 0; i < 20; i++) {
-            Arrays.fill(trivial.manager.optionen.mapTileNum[i], 11);
-        }
-        // ... 11 11 11 ...
-        // ... 11 I  0 ...
-        // ... 11 0  11 ...
-        // ...
-        trivial.manager.optionen.mapTileNum[5][6] = 0;
-        trivial.manager.optionen.mapTileNum[6][5] = 0;
-
-        Object eventData[] = new Object[] { 2, "down",240, 240};
-        trivial.manager.updateEvent("update_koordinate", eventData);
-
-        trivial.ermittleRichtung();
-
-        assertTrue(trivial.leftPressed);
-    }
-
- */
 
     @Test
     public void test_schickeRichtung() {
@@ -622,7 +413,33 @@ public class TrivialeKITest {
         // Wie kann man events testen?
     }
 
+    @Test
+    public void test_gegenRichtung_up() {
+        TrivialeKI trivial = createTrivial();
+        String actual = trivial.gegenRichtung("up");
+        assertEquals("down", actual);
+    }
 
+    @Test
+    public void test_gegenRichtung_down() {
+        TrivialeKI trivial = createTrivial();
+        String actual = trivial.gegenRichtung("down");
+        assertEquals("up", actual);
+    }
+
+    @Test
+    public void test_gegenRichtung_left() {
+        TrivialeKI trivial = createTrivial();
+        String actual = trivial.gegenRichtung("left");
+        assertEquals("right", actual);
+    }
+
+    @Test
+    public void test_gegenRichtung_right() {
+        TrivialeKI trivial = createTrivial();
+        String actual = trivial.gegenRichtung("right");
+        assertEquals("left", actual);
+    }
 
 
 }

@@ -6,10 +6,16 @@ import org.joml.Vector3f;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Klasse die ein gelbes Auto repäsentiert
+ */
 public class GelbesAuto extends GameObject{
 
     Texture up1, down1, left1, right1;
 
+    /**
+     * Konstruktor
+     */
     GelbesAuto(){
         Spieloptionen optionen = Spieloptionen.getInstance();
 
@@ -21,10 +27,14 @@ public class GelbesAuto extends GameObject{
         //Tile Default Werte
         Position = new Vector2f(100, 100);
         Size = new Vector2f(optionen.tileGroesse, optionen.tileGroesse);
-        Color = new Vector3f(0.5f, 0.5f, 0.5f);
+        Color = new Vector3f(1.f, 1.f, 1.f);
         Velocity = new Vector2f(0.0f, 0.0f);
     }
 
+    /**
+     * Zeichenfunktion für ein gelbes Fahrzeug
+     * @param renderer
+     */
     void Draw(SpriteRenderer renderer){
         Texture image = null;
 

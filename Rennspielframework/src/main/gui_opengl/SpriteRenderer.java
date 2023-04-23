@@ -14,19 +14,27 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+
+/**
+ * Klasse die das Zeichnen von Texturen verwaltet
+ */
 public class SpriteRenderer {
 
     //Render State
     private Shader shader;
     private int quadVAO;
 
-    //Constructor( inits shaders/shapes)
+    /**Constructor( inits shaders/shapes)
+     * @param shader
+     */
     public SpriteRenderer(Shader shader){
         this.shader = shader;
         initRenderData();
     }
 
-    //Render a definied quad textured with given sprite
+    /**
+     *    Render a definied quad textured with given sprite
+     */
     public void DrawSprite(Texture texture, Vector2f position, Vector2f size, Vector3f color){
         this.shader.use();
         Matrix4f model = new Matrix4f();
@@ -48,6 +56,9 @@ public class SpriteRenderer {
 
     }
 
+    /**
+     * Initialisiere der Vertex-Daten
+     */
     private void initRenderData(){
         int VBO;
         /*float vertices[] = {

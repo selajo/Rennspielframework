@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Klasse die Spielobjekte verwaltet
+ */
 public class SpielobjekteManager implements EventListener {
 
         EventManager event;
@@ -58,7 +61,7 @@ public class SpielobjekteManager implements EventListener {
         }
 
         /**
-         * Zeichne alle Spielobjekte auf das JPanel
+         * //Zeichnen jedes Element in der Entitiy List
          * @param renderer SpriteRenderer
          */
         public void Draw(SpriteRenderer renderer){
@@ -67,16 +70,52 @@ public class SpielobjekteManager implements EventListener {
                     entry.getValue().Draw(renderer);
                 }
             }
-        }
+            //Fuer den Menschlichen Spieler das neue Spieler die bestenden Spielerliste bekommen
+            if(optionen.addClientsInformation != null && optionen.client ){
+                for(Map.Entry<Integer, Object[]> entry : optionen.addClientsInformation.entrySet()){
+                    Object[] eventData = entry.getValue();
+                    if(true){
+                        String autotyp = (String)eventData[0];
 
-        /*public void drawEntities(Graphics2D g2) { //Zeichnen jedes Element in der Entitiy List
-            if(entityList != null) {
-            entityList.forEach((key,value)->{
-                //System.out.println(key+" = "+value); //Debug
-                value.Draw(g2);
-            });
+                        //Fabrik "make Car string iD
+                        if("RotesAuto" == (String)eventData[0] || autotyp.equals("RotesAuto") ) {
+                            RotesAuto rauto = new RotesAuto();
+                            rauto.Position.x =   (int) ((double) eventData[1]) * optionen.tileGroesse ;
+                            rauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[2])* optionen.tileGroesse ;
+                            rauto.direction = (String) eventData[3];
+                            addEntity((int)entry.getKey(), rauto);
+
+                        }
+                        if("BlauesAuto" == (String)eventData[0] || autotyp.equals("BlauesAuto") ) {
+                            BlauesAuto bauto = new BlauesAuto();
+                            bauto.Position.x = (int) ((double) eventData[1]) * optionen.tileGroesse ;
+                            bauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[2])* optionen.tileGroesse ;
+                            bauto.direction = (String) eventData[3];
+                            addEntity((int)entry.getKey(), bauto);
+
+                        }
+                        if("GruenesAuto" == (String)eventData[0] || autotyp.equals("GruenesAuto") ) {
+                            GruenesAuto gauto = new GruenesAuto();
+                            gauto.Position.x = (int) ((double) eventData[1]) * optionen.tileGroesse ;
+                            gauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[2])* optionen.tileGroesse ;
+                            gauto.direction = (String) eventData[3];
+                            addEntity((int)entry.getKey(), gauto);
+
+                        }
+                        if("GelbesAuto" == (String)eventData[0] || autotyp.equals("GelbesAuto") ) {
+                            GelbesAuto gauto = new GelbesAuto();
+                            gauto.Position.x = (int) ((double) eventData[1]) * optionen.tileGroesse ;
+                            gauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[2])* optionen.tileGroesse ;
+                            gauto.direction = (String) eventData[3];
+                            addEntity((int)entry.getKey(), gauto);
+
+                        }
+                    }
+
+                    optionen.addClientsInformation.remove(entry.getKey());
+                }
+            }
         }
-    }*/
 
         @Override
         /**
@@ -89,8 +128,8 @@ public class SpielobjekteManager implements EventListener {
                 for (Map.Entry<Integer, GameObject> entry : entityList.entrySet()) {
                     if(entry.getKey() == eventData[0]) {
                         entry.getValue().direction = (String) eventData[1];
-                        entry.getValue().Position.x = (int) eventData[2];
-                        entry.getValue().Position.y = (int) eventData[3];
+                        entry.getValue().Position.x =  (int) eventData[2];
+                        entry.getValue().Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) eventData[3];
                     }
                 }
             }
@@ -102,8 +141,8 @@ public class SpielobjekteManager implements EventListener {
                 //Fabrik "make Car string iD
                 if("RotesAuto" == (String)eventData[1] || autotyp.equals("RotesAuto") ) {
                     RotesAuto rauto = new RotesAuto();
-                    rauto.Position.x = (int) ((double) eventData[2]) * optionen.tileGroesse ;
-                    rauto.Position.y = (int) ((double) eventData[3])* optionen.tileGroesse ;
+                    rauto.Position.x =   (int) ((double) eventData[2]) * optionen.tileGroesse ;
+                    rauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[3])* optionen.tileGroesse ;
                     rauto.direction = (String) eventData[4];
                     addEntity((int)eventData[0], rauto);
 
@@ -111,7 +150,7 @@ public class SpielobjekteManager implements EventListener {
                 if("BlauesAuto" == (String)eventData[1] || autotyp.equals("BlauesAuto") ) {
                     BlauesAuto bauto = new BlauesAuto();
                     bauto.Position.x = (int) ((double) eventData[2]) * optionen.tileGroesse ;
-                    bauto.Position.y = (int) ((double) eventData[3])* optionen.tileGroesse ;
+                    bauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[3])* optionen.tileGroesse ;
                     bauto.direction = (String) eventData[4];
                     addEntity((int)eventData[0], bauto);
 
@@ -119,7 +158,7 @@ public class SpielobjekteManager implements EventListener {
                 if("GruenesAuto" == (String)eventData[1] || autotyp.equals("GruenesAuto") ) {
                     GruenesAuto gauto = new GruenesAuto();
                     gauto.Position.x = (int) ((double) eventData[2]) * optionen.tileGroesse ;
-                    gauto.Position.y = (int) ((double) eventData[3])* optionen.tileGroesse ;
+                    gauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[3])* optionen.tileGroesse ;
                     gauto.direction = (String) eventData[4];
                     addEntity((int)eventData[0], gauto);
 
@@ -127,7 +166,7 @@ public class SpielobjekteManager implements EventListener {
                 if("GelbesAuto" == (String)eventData[1] || autotyp.equals("GelbesAuto") ) {
                     GelbesAuto gauto = new GelbesAuto();
                     gauto.Position.x = (int) ((double) eventData[2]) * optionen.tileGroesse ;
-                    gauto.Position.y = (int) ((double) eventData[3])* optionen.tileGroesse ;
+                    gauto.Position.y = ((optionen.tileGroesse * optionen.maxBildschirmZeilen) - optionen.tileGroesse) - (int) ((double) eventData[3])* optionen.tileGroesse ;
                     gauto.direction = (String) eventData[4];
                     addEntity((int)eventData[0], gauto);
 

@@ -70,26 +70,31 @@ public class TileControllerTest {
         assertEquals(1, tileController.spielfeldTiles.get(0).getRGB(0, 0));
     }
 
-/*
+
     @Test
     public void test_writeToFile_return() {
         TileReader mock = mock(TileReader.class);
         when(mock.writeToFile(anyString(), anyString())).thenReturn(true);
+        when(mock.saveConfig(anyString())).thenReturn(true);
 
         TileController tileController = TileController.getInstance();
-        tileController.checkpunkte = "check";
-        tileController.startposition = "start";
+        tileController.checkpunkte = "check\n";
+        tileController.startposition = "start\n";
         tileController.tileReader = mock;
 
         boolean actual = tileController.writeCompleteData("testMap", "text");
 
         assertTrue(actual);
-        //verify(mock, times(1)).writeToFile("testMap.txt", "text");
-        //verify(mock, times(1)).writeToFile("testMap_checkpoints.txt", "check");
-        //verify(mock, times(1)).writeToFile("testMap_startpositionen.txt", "start");
+        verify(mock, times(1)).writeToFile("testMap.txt", "MAP\n" +
+                "30 20\n" +
+                "textSTARTPOINT\n" +
+                "start\n" +
+                "CHECKPOINT\n" +
+                "check\n");
+        verify(mock, times(1)).saveConfig("testMap");
     }
 
- */
+
 
     @Test
     public void test_ladeMap_Mocking() {

@@ -7,6 +7,9 @@ import org.joml.Vector3f;
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * Klasse, die Spiellevel verwaltet
+ */
 public class GameLevel {
     Spieloptionen spieloptionen = Spieloptionen.getInstance();
 
@@ -16,6 +19,13 @@ public class GameLevel {
     //constructor
     public GameLevel(){}
     //load Level from file
+
+    /**
+     * Funktion, in der Spiellevel geladen wird
+     * @param filepath
+     * @param maxBildschirmSpalten
+     * @param maxBildschirmZeilen
+     */
     public void Load(String filepath, int maxBildschirmSpalten, int maxBildschirmZeilen){
         int [][] mapTileNum = new int[maxBildschirmSpalten][maxBildschirmZeilen];
         try{
@@ -61,7 +71,11 @@ public class GameLevel {
     init(mapTileNum);
 
     }
-    //render level
+
+    /**
+     * Zeichenfunktion
+     * @param renderer
+     */
     public void Draw(SpriteRenderer renderer){
         for(GameObject tile : this.gameObjects){
             tile.Draw(renderer);
@@ -69,11 +83,15 @@ public class GameLevel {
 
     }
 
+    /**
+     * Initialisierungsfunktion der Spielleveldaten
+     * @param tileData
+     */
     public void init (int [][] tileData){
-        int height = spieloptionen.maxBildschirmZeilen; //Bitte noch ändern hier
+        int height = spieloptionen.maxBildschirmZeilen;
         int width = spieloptionen.maxBildschirmSpalten;
         float unit_width = spieloptionen.tileGroesse;
-        float unit_height = spieloptionen.tileGroesse;
+        float unit_height = spieloptionen.tileGroesse ;
 
         int [][] inverseTileData = new int [width][height];
         //Tiles umdrehen //OpenGL ist spiegelverkehrt
@@ -92,7 +110,7 @@ public class GameLevel {
                 Vector2f pos = new Vector2f( unit_width * x, unit_height * y);
                 Vector2f size = new Vector2f(unit_width, unit_height);
                 Integer tileNumber = inverseTileData[x][y];
-                GameObject obj = new GameObject(pos, size, ResourceManager.getTexture(tileNumber.toString()), new Vector3f(0.5f, 0.5f, 0.5f), new Vector2f(0.0f, 0.0f));
+                GameObject obj = new GameObject(pos, size, ResourceManager.getTexture(tileNumber.toString()), new Vector3f(1.0f, 1.0f, 1.0f), new Vector2f(0.0f, 0.0f));
                 this.gameObjects.addElement(obj);
 
             }

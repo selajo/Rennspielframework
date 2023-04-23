@@ -8,10 +8,20 @@ import java.util.*;
 
 public class ASternKI extends AKI {
 
+    /**
+     * SpielKnoten die noch zu bearbeiten sind
+     */
     ArrayList<SpielKnoten> offeneKnoten;
+
+    /**
+     * Spielknoten die bereits bearbeitet wurden.
+     */
     ArrayList<SpielKnoten> geschlosseneKnoten;
 
 
+    /**
+     * Erzeugt ASternKI
+     */
     public ASternKI(){
         logger.info("A-Stern-KI-Client startet.");
         manager = new KISpielObjekteManager();
@@ -24,16 +34,16 @@ public class ASternKI extends AKI {
         kollidiert = false;
     }
 
-
+    /**
+     * A*-Logik die den kürzesten Pfad berechnet
+     */
     public void aStern() {
 
         if (!graphAlgorithmusStartUp()){
             return;
         }
 
-        if (rundeBeendet){
-            System.out.println("rundeBeendet");
-        }
+        long startTime = System.nanoTime();
 
         Strecke = new ArrayList<>();
 
@@ -80,6 +90,9 @@ public class ASternKI extends AKI {
             }
         }
 
+        long timeNeededToGetPath = System.nanoTime() - startTime;
+
+        logger.info(timeNeededToGetPath);
 
         graphAlgorithmusRichtungsentscheidung(); // Richtung wird ermittelt
 
@@ -88,25 +101,22 @@ public class ASternKI extends AKI {
         // berechnete Richtung weitergeben
         pressRichtung(richtung);
 
-
-
         logger.info("Richtung: " + richtung);
 
         // aktuelle Position wieder speichern
         if(checkStrasse(manager.posX, manager.posY)) {
             saveMapTile(richtung);
         }
-        // Merke den aktuellen Knoten und die aktuelle Richtung für den Bremsvorgang
+
         SpielKnotenSpeicher = nächsterSpielKnoten;
         SpielKnotenSpeicher.setParent(aktuellerSpielKnoten);
     }
 
 
-
+    /**
+     * Niedrigste Kosten werden ermittelt.
+     */
     public SpielKnoten getNiedrigstesF() {
-        /**
-         * A* CLient-relevante Funktion.
-         */
         SpielKnoten niedrigst = offeneKnoten.get(0);
         for (SpielKnoten sk : offeneKnoten) {
             if (sk.getFunktion()< niedrigst.getFunktion()) {
@@ -116,10 +126,10 @@ public class ASternKI extends AKI {
         return niedrigst;
     }
 
+    /**
+     * kürzester Pfad wird ermittelt durch rückwärtsgehen zum Startknoten
+     */
     private void retraceStrecke(SpielKnoten current) {
-        /**
-         * A* Client-relevante Funktion.
-         */
         SpielKnoten temp = current;
         this.Strecke.add(current);
 
@@ -129,6 +139,9 @@ public class ASternKI extends AKI {
         }
     }
 
+    /**
+     * Ermittelt Richtung und schicht diese als Event
+     */
     @Override
     public void update(){
         aStern();

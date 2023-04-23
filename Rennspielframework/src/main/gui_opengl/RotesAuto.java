@@ -4,6 +4,9 @@ import anwendungsschicht.Spieloptionen;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+/**
+ * Repräsentiert ein rotes Fahrzeug
+ */
 public class RotesAuto extends GameObject {
     Texture up1, down1, left1, right1;
 
@@ -18,10 +21,14 @@ public class RotesAuto extends GameObject {
         //Tile Default Werte
         Position = new Vector2f(100, 100);
         Size = new Vector2f(optionen.tileGroesse, optionen.tileGroesse);
-        Color = new Vector3f(0.5f, 0.5f, 0.5f);
+        Color = new Vector3f(1.f, 1.f, 1.f);
         Velocity = new Vector2f(0.0f, 0.0f);
     }
 
+    /**
+     * Zeichnet ein rotes Fahrzeug
+     * @param renderer
+     */
     void Draw(SpriteRenderer renderer){
         Texture image = null;
 

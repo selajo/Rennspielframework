@@ -1,5 +1,8 @@
 package spiellogikschicht;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +12,8 @@ import java.util.Map;
 import anwendungsschicht.EventListener;
 import anwendungsschicht.EventManager;
 import anwendungsschicht.Spieloptionen;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import spielansichtsschicht.ISpielAnsicht;
 import spielansichtsschicht.SpielAnsichtTyp;
 
@@ -62,6 +67,10 @@ public abstract class BasicSpiellogik implements ISpiellogik, EventListener{
 	 * Zeitpunkt an dem das Spiel gestatet ist.
 	 */
 	Date spielstart;
+	/**
+	 ** Zeitpunkt an dem das Spiel beendet ist.
+	 */
+	Date spielbeendet;
 	/**
 	 * Aktueller Countdownwert
 	 */
@@ -249,7 +258,7 @@ public abstract class BasicSpiellogik implements ISpiellogik, EventListener{
 					if(optionen.spielmodus == 2) {
 						//TODO: Anzahl Runden zaehlen
 						for(int i = 1; i < optionen.maxAnzahlSpieler; i++) {
-							AKomponenteAkteurDaten daten = (AKomponenteAkteurDaten) entry.getValue().GetKomponente(i);
+							AKomponenteAkteurDaten daten = (AKomponenteAkteurDaten) entry.getValue().GetKomponente(1);
 							if(daten.anzahlRunden == 3) {
 								//SendEvent Spiel beendet
 								VAendereStatus(Spielstadien.Status_Spiel_Beendet);
@@ -270,6 +279,7 @@ public abstract class BasicSpiellogik implements ISpiellogik, EventListener{
 	case Status_Spiel_Beendet:
 		//Event Statisik
 		if(spiellaeuft) {
+		spielbeendet = new Date();
 		System.out.println("Game Over");
 		Object o [] = new Object[akteure.size()*3] ;
 		if(akteure != null) {
@@ -288,7 +298,17 @@ public abstract class BasicSpiellogik implements ISpiellogik, EventListener{
 		}
 		event.notify("aendere_status_beendet", Spielstadien.Status_Spiel_Beendet, o);
 		spiellaeuft = false;
+
+		//Make JSON for Winner-statistics
+			speichereStatisikDaten();
 		}
+
+		Date aktuelleZeit = new Date();
+		if(aktuelleZeit.getTime() > spielbeendet.getTime() + 5000 && !optionen.client){
+			System.exit(0);
+		}
+
+
 		break;
 		}	
 		}
@@ -330,5 +350,122 @@ public abstract class BasicSpiellogik implements ISpiellogik, EventListener{
 		fabrik = new AkteurFabrik();
 		return fabrik;
 	};
+
+	public void speichereStatisikDaten(){
+
+		String saveFile = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date()) + ".json";
+		String playerFile = "Spielerstatistik_" + saveFile;
+
+		JSONObject mainObj = new JSONObject();
+		JSONArray array = new JSONArray();
+
+		Map<Integer, Integer> spielerPositionen = ermittleSieger();
+
+		for (Map.Entry<Integer, Spielakteur> entry : akteure.entrySet()) {
+			AKomponenteAkteurDaten data = (AKomponenteAkteurDaten) entry.getValue().GetKomponente(1);
+			JSONObject jo = new JSONObject();
+
+			jo.put("Spielernummer", entry.getValue().GetId());
+			jo.put("Rundenanzahl", data.anzahlRunden);
+			jo.put("BesteRundenZeit", data.besteRundenZeit);
+			jo.put("Rundenzeiten", data.rundenZeiten);
+			jo.put("TileKollisionAnzahl", data.anzahlWandKollisionen);
+			jo.put("SpielerKollisionAnzahl", data.anzahlSpielerKollisionen);
+			jo.put("Endplatzierung", spielerPositionen.get(entry.getValue().GetId()));
+
+			array.add(jo);
+
+		}
+		mainObj.put("StartTimestamp", spielstart.toString());
+		mainObj.put("EndTimestamp", spielbeendet.toString());
+		mainObj.put("Spielmodus", optionen.spielmodus );
+		mainObj.put("Spielerdaten", array);
+
+		//Save to file
+		try {
+			FileWriter file = new FileWriter(playerFile);
+			file.write(mainObj.toString());
+			file.close();
+		}
+		catch(IOException ioException){
+			ioException.printStackTrace();
+		}
+	}
+
+		void bubbleSort(double arr[])
+		{
+			int n = arr.length;
+			for (int i = 0; i < n - 1; i++)
+				for (int j = 0; j < n - i - 1; j++)
+					if (arr[j] > arr[j + 1]) {
+						// swap arr[j+1] and arr[j]
+						double temp = arr[j];
+						arr[j] = arr[j + 1];
+						arr[j + 1] = temp;
+					}
+		}
+
+	public Map<Integer, Integer> ermittleSieger() {
+		//Beste Rundenzeit
+		if (optionen.spielmodus == 1) {
+
+			double darray[] = new double[akteure.size()];
+			Map<Integer, Double> rundenzeiten = new HashMap<Integer, Double>();
+			Map<Integer, Integer> plazierungSieger = new HashMap<Integer, Integer>();
+
+			int i = 0;
+			for (Map.Entry<Integer, Spielakteur> entry : akteure.entrySet()) {
+				AKomponenteAkteurDaten data = (AKomponenteAkteurDaten) entry.getValue().GetKomponente(1);
+				rundenzeiten.put(entry.getKey(), data.besteRundenZeit);
+				darray[i] = data.besteRundenZeit;
+				i++;
+			}
+
+			bubbleSort(darray);
+
+			for (int j = 0; j < darray.length; j++) {
+				for (Map.Entry<Integer, Double> entry : rundenzeiten.entrySet()) {
+					if (entry.getValue() == darray[j]) {
+						plazierungSieger.put(entry.getKey(), j + 1);
+					}
+				}
+			}
+			return plazierungSieger;
+		}
+		//Schnellsten 3 Runden
+		else if (optionen.spielmodus == 2) {
+			//TODO
+			Map<Integer, Integer> plazierungSieger = new HashMap<Integer, Integer>();
+
+			for (Map.Entry<Integer, Spielakteur> entry : akteure.entrySet()) {
+				AKomponenteAkteurDaten data = (AKomponenteAkteurDaten) entry.getValue().GetKomponente(1);
+
+				int i = 1; //Erster Platz
+				for (Map.Entry<Integer, Spielakteur> entry2 : akteure.entrySet()) {
+					AKomponenteAkteurDaten data2 = (AKomponenteAkteurDaten) entry2.getValue().GetKomponente(1);
+					if (entry.getValue().GetId() != entry2.getValue().GetId()) {
+						if (data.anzahlRunden > data2.anzahlRunden) {
+							continue;
+						}
+						else if(data.anzahlRunden == data2.anzahlRunden){
+							if (data.checkpoints >= data2.checkpoints) {
+								continue;
+							} else {
+								i++;
+							}
+						}
+						else {
+							i++;
+						}
+					}
+				}
+					plazierungSieger.put(entry.getKey(), i);
+			}
+
+			return plazierungSieger;
+		}
+		return null;
+	}
+
 	
 }

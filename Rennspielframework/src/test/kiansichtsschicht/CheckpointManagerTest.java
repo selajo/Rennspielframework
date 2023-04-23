@@ -1,12 +1,14 @@
 package kiansichtsschicht;
 
 
+import anwendungsschicht.Spieloptionen;
 import anwendungsschicht.TileKoordinate;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -173,5 +175,40 @@ public class CheckpointManagerTest {
         list.add(new CheckpointManager.Points(2, 2, ""));
 
         Assert.assertTrue(p.isInArea(list, 1));
+    }
+
+    @Test
+    public void test_zurueckZuLetzterEcke() {
+        CheckpointManager checkpointManager = new CheckpointManager(new KISpielObjekteManager());
+        checkpointManager.ecken = new ArrayList<>();
+        checkpointManager.ecken.add(new CheckpointManager.Points(1, 1, "up"));
+        checkpointManager.aktuellerPfad = new ArrayList<>();
+        checkpointManager.aktuellerPfad.add(new CheckpointManager.Points(1, 1, "up"));
+        checkpointManager.aktuellerPfad.add(new CheckpointManager.Points(1, 2, "up"));
+        checkpointManager.aktuellerPfad.add(new CheckpointManager.Points(1, 2, "up"));
+        int actual = checkpointManager.zurueckZurLetztenEcke();
+
+        assertEquals(3, actual);
+    }
+
+    @Test
+    public void test_setzeCheckpunkte() {
+        Spieloptionen spieloptionen = new Spieloptionen();
+        spieloptionen.mapTileNum = new int[][] {
+                {10, 10, 10, 10, 10, 10},
+                {11, 11, 11, 11, 11, 11},
+                {11, 11, 11, 11, 11, 11},
+                {10, 10, 10, 10, 10, 10}
+        };
+        CheckpointManager checkpointManager = new CheckpointManager(new KISpielObjekteManager());
+        checkpointManager.checkpunktAnzahl = 3;
+        checkpointManager.aktuellerPfad = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            checkpointManager.aktuellerPfad.add(new CheckpointManager.Points(i, 1, "right"));
+        }
+
+        Map<Integer, List<TileKoordinate>> checkpunkte = checkpointManager.setzeCheckpunkte();
+        assertEquals(5, checkpunkte.get(checkpunkte.size()).get(0).getTileX());
+        assertEquals(1, checkpunkte.get(checkpunkte.size()).get(0).getTileY());
     }
 }

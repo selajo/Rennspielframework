@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * Klasse für einen selbst definierten KeyListener, für das erkennen von Tastaturinput
+ */
 public class KeyListener {
     private MenschlicheAnsichtOpenGL ansicht;
     private static KeyListener instance;
@@ -19,10 +22,18 @@ public class KeyListener {
         event = EventManager.getInstance();
     }
 
+    /**
+     * Initialisierungsfunktion
+     * @param ansicht Ansicht
+     */
     public void init(MenschlicheAnsichtOpenGL ansicht){
         this.ansicht = ansicht;
     }
 
+    /**
+     * Singelton Funktion
+     * @return
+     */
     public static KeyListener get() {
         if (KeyListener.instance == null) {
             KeyListener.instance = new KeyListener();
@@ -31,6 +42,14 @@ public class KeyListener {
         return KeyListener.instance;
     }
 
+    /**
+     * Funktion für Callback, definiert nach vorlage von LWGL
+     * @param window
+     * @param key
+     * @param scancode
+     * @param action
+     * @param mods
+     */
     public static void keyCallback(long window, int key, int scancode, int action, int mods) {
         if (action == GLFW_PRESS) {
             get().keyPressed[key] = true;
@@ -41,7 +60,11 @@ public class KeyListener {
         }
     }
 
-
+    /**
+     * Erkennt KeyInput
+     * @param keyCode
+     * @return
+     */
     public static boolean isKeyPressed(int keyCode) {
         return get().keyPressed[keyCode];
     }
@@ -52,19 +75,15 @@ public class KeyListener {
 
         if(KeyListener.isKeyPressed(GLFW_KEY_W)) {
             upPressed = true;
-            System.out.println("up: " + upPressed);
         }
         if(KeyListener.isKeyPressed(GLFW_KEY_S)) {
             downPressed = true;
-            System.out.println("down: " + downPressed);
         }
         if(KeyListener.isKeyPressed(GLFW_KEY_A)) {
             leftPressed = true;
-            System.out.println("left: " + leftPressed);
         }
         if(KeyListener.isKeyPressed(GLFW_KEY_D)) {
             rightPressed = true;
-            System.out.println("right: " + rightPressed);
         }
 
         //if(this.ansicht.status == Spielstadien.Status_Spiel_Laeuft) {
